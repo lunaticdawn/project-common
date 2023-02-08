@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "HTTP://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<settings>
+		<!-- 설정에서 각 매퍼에 설정된 캐시를 전역적으로 사용할지 말지에 대한 여부. true|false. true -->
+		<setting name="cacheEnabled" value="false"/>
+		
+		<!-- 지연로딩을 사용할지에 대한 여부. 사용하지 않는다면 모두 즉시 로딩할 것이다. 이 값은 fetchType 속성을 사용해서 대체할 수 있다. true|false. false -->
+		<setting name="lazyLoadingEnabled" value="false"/>
+		
+		<!-- 활성화되면 모든 메서드 호출은 객체의 모든 lazy properties 을 로드한다. 그렇지 않으면 각 property 가 필요에 따라 로드된다. true|false. false (3.4.1 부터 true) -->
+		<setting name="aggressiveLazyLoading" value=""/>
+	</settings>
+</configuration>
