@@ -1,107 +1,91 @@
 package com.project.cmn.http.configuration;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import com.project.cmn.datasource.CreateDataSources;
+import com.project.cmn.datasource.DataSourcesConfig;
+import com.project.cmn.http.accesslog.AccessLog;
+import com.project.cmn.http.accesslog.AccessLogAspect;
+import com.project.cmn.http.accesslog.AccessLogConfig;
+import com.project.cmn.http.accesslog.AccessLogInterceptor;
+import com.project.cmn.mybatis.CreateMyBatis;
+import com.project.cmn.mybatis.MyBatisConfig;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import com.project.cmn.datasource.DataSources;
-import com.project.cmn.datasource.DataSourcesConfig;
-import com.project.cmn.http.accesslog.AccessLog;
-import com.project.cmn.http.accesslog.AccessLogAspect;
-import com.project.cmn.http.accesslog.AccessLogConfig;
-import com.project.cmn.http.accesslog.AccessLogInterceptor;
-
-import lombok.extern.slf4j.Slf4j;
-
 /**
  * 웹 프로젝트 용 설정들
- *
  */
 @Slf4j
 @Configuration
 @EnableWebMvc
-@EnableConfigurationProperties
+@RequiredArgsConstructor
 public class WebMvcConfiguration implements WebMvcConfigurer {
-	@Autowired
-	private ConfigurableBeanFactory configurableBeanFactory;
+    private final AccessLogConfig accessLogConfig;
+    private final ConfigurableBeanFactory configurableBeanFactory;
+    private final DataSourcesConfig dataSourcesConfig;
+    private final MyBatisConfig myBatisConfig;
 
-	@Value("${project.access.log.enabled}")
-	private boolean accessLogEnabled;
+    /**
+     * {@link AccessLog} 생성
+     *
+     * @return {@link AccessLog}
+     */
+    @Bean
+    @ConditionalOnProperty(prefix = "project.access.log", value = "enabled", havingValue = "true")
+    public AccessLog accessLog() {
+        log.debug("# Create AccessLog");
+        return new AccessLog();
+    }
 
-	/**
-	 * Access Log 설정을 가져옴
-	 *
-	 * @return {@link AccessLogConfig}
-	 */
-	@Bean
-	@ConditionalOnProperty(prefix = "project.access.log", value = "enabled", havingValue = "true")
-	public AccessLogConfig getAccessLogConfig() {
-		log.debug("# Create AccessLogConfig");
-		return new AccessLogConfig();
-	}
+    /**
+     * Access Log를 위한 AOP 생성
+     *
+     * @return
+     */
+    @Bean
+    @ConditionalOnProperty(prefix = "project.access.log", value = "enabled", havingValue = "true")
+    public AccessLogAspect accessLogAspect() {
+        log.debug("# Create AccessLogAspect");
+        return new AccessLogAspect();
+    }
 
-	/**
-	 * {@link AccessLog} 생성
-	 *
-	 * @return {@link AccessLog}
-	 */
-	@Bean
-	@ConditionalOnProperty(prefix = "project.access.log", value = "enabled", havingValue = "true")
-	public AccessLog getAccessLog() {
-		log.debug("# Create AccessLog");
-		return new AccessLog();
-	}
+    /**
+     * Interceptor 설정
+     */
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        if (accessLogConfig.isEnabled()) {
+            registry.addInterceptor(new AccessLogInterceptor(accessLog(), accessLogConfig)).addPathPatterns(accessLogConfig.getExcludePathPatterns());
+        }
+    }
 
-	/**
-	 * Access Log를 위한 AOP 생성
-	 *
-	 * @return
-	 */
-	@Bean
-	@ConditionalOnProperty(prefix = "project.access.log", value = "enabled", havingValue = "true")
-	public AccessLogAspect getAccessLogAspect() {
-		log.debug("# Create AccessLogAspect");
-		return new AccessLogAspect();
-	}
+    /**
+     * Datasource를 동적으로 생성
+     *
+     * @return
+     */
+    @Bean
+    @ConditionalOnProperty(prefix = "project.datasources", value = "enabled", havingValue = "true")
+    public CreateDataSources createDataSources() {
+        log.debug("# Create CreateDataSources");
+        return new CreateDataSources(dataSourcesConfig, configurableBeanFactory);
+    }
 
-	/**
-	 * Interceptor 설정
-	 */
-	@Override
-	public void addInterceptors(InterceptorRegistry registry) {
-		if (accessLogEnabled) {
-			registry.addInterceptor(new AccessLogInterceptor(getAccessLog(), getAccessLogConfig())).addPathPatterns(getAccessLogConfig().getExcludePathPatterns());
-		}
-	}
-
-	/**
-	 * Datasource에 대한 설정을 가져옴
-	 *
-	 * @return {@link DataSourcesConfig}
-	 */
-	@Bean
-	@ConditionalOnProperty(prefix = "project.datasources", value = "enabled", havingValue = "true")
-	public DataSourcesConfig getDataSourcesConfig() {
-		log.debug("# Create DataSourcesConfig");
-		return new DataSourcesConfig();
-	}
-
-	/**
-	 * Datasource를 동적으로 생성
-	 *
-	 * @return
-	 */
-	@Bean
-	@ConditionalOnProperty(prefix = "project.datasources", value = "enabled", havingValue = "true")
-	public DataSources getDataSources() {
-		log.debug("# Create DataSources");
-		return new DataSources(configurableBeanFactory);
-	}
+    /**
+     * MyBatis 설정을 동적으로 생성
+     *
+     * @return
+     */
+    @Bean
+    @ConditionalOnProperty(prefix = "project.mybatis", value = "enabled", havingValue = "true")
+    public CreateMyBatis createMyBatis() {
+        log.debug("# Create CreateMyBatis");
+        return new CreateMyBatis(myBatisConfig, configurableBeanFactory);
+    }
 }

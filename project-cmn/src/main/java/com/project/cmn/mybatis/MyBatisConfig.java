@@ -1,4 +1,4 @@
-package com.project.cmn.datasource;
+package com.project.cmn.mybatis;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -9,21 +9,21 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 /**
- * DataSource 설정들
+ * MyBatis 설정들
  */
 @Getter
 @Setter
 @ToString
 @Component
-@ConfigurationProperties(prefix = "project.datasources")
-public class DataSourcesConfig {
+@ConfigurationProperties(prefix = "project.mybatis")
+public class MyBatisConfig {
     /**
-     * project.datasources 설정 사용 여부
+     * project.mybatis 설정 사용 여부
      */
     private boolean enabled;
 
     /**
-     * DataSource 설정들
+     * MyBatis 설정들
      */
-    private List<DataSourceItem> datasourceItemList;
+    private List<MyBatisItem> mybatisItemList;
 }

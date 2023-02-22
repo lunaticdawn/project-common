@@ -1,100 +1,72 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <configuration scan="true" scanPeriod="30 seconds" debug="true">
 
-	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
-		<encoder>
-			<charset>UTF-8</charset>
-			<pattern>%d [%-5level] [%X{LOG_KEY}] %logger.%M\(%line\) - %msg%n</pattern>
-		</encoder>
-	</appender>
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>%d [%-5level] [%X{LOG_KEY}] %logger.%M\(%line\) - %msg%n</pattern>
+        </encoder>
+    </appender>
 
-	<appender name="TR_LOG" class="ch.qos.logback.core.ConsoleAppender">
-		<encoder>
-			<charset>UTF-8</charset>
-			<pattern>%d [%-5level] [%X{LOG_KEY}] %msg%n</pattern>
-		</encoder>
-	</appender>
-	
-	<appender name="DEFAULT_LOG_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<fileNamePattern>logs/app/default.%d{yyyy-MM-dd}.log</fileNamePattern>
-			<maxHistory>30</maxHistory>
-		</rollingPolicy>
-		<encoder>
-			<charset>UTF-8</charset>
-			<pattern>[%date{ISO8601}] [%thread] [%X{LOG_KEY}] %-5level: %logger{36}\(%M:%line\) - %msg%n</pattern>
-		</encoder>
-	</appender>
-
-	<logger name="kr.co.giftishow.condition" level="DEBUG" additivity="false">
-		<appender-ref ref="CONSOLE" />
-		<appender-ref ref="DEFAULT_LOG_FILE" />
-	</logger>
-
-	<!-- 3rdparty Loggers -->
-	<logger name="org.springframework" level="INFO" additivity="false">
-		<appender-ref ref="CONSOLE" />
-		<appender-ref ref="DEFAULT_LOG_FILE" />
-	</logger>
-	<logger name="org.hibernate" level="INFO" additivity="false">
-		<appender-ref ref="CONSOLE" />
-		<appender-ref ref="DEFAULT_LOG_FILE" />
-	</logger>
-	<logger name="org.jboss.logging" level="INFO" additivity="false">
-		<appender-ref ref="CONSOLE" />
-		<appender-ref ref="DEFAULT_LOG_FILE" />
-	</logger>
-	<logger name="org.apache.commons" level="INFO" additivity="false">
-		<appender-ref ref="CONSOLE" />
-		<appender-ref ref="DEFAULT_LOG_FILE" />
-	</logger>
-	<logger name="org.apache.tiles" level="INFO" additivity="false">
-		<appender-ref ref="CONSOLE" />
-		<appender-ref ref="DEFAULT_LOG_FILE" />
-	</logger>
-	<logger name="org.thymeleaf" level="INFO" additivity="false">
-		<appender-ref ref="CONSOLE" />
-		<appender-ref ref="DEFAULT_LOG_FILE" />
-	</logger>
-
-	<!-- JDBC Loggers -->
-	<logger name="com.zaxxer.hikari" level="INFO" additivity="false">
-		<appender-ref ref="CONSOLE" />
-		<appender-ref ref="DEFAULT_LOG_FILE" />
-	</logger>
-	<logger name="log4jdbc" level="INFO" additivity="false">
-		<appender-ref ref="CONSOLE" />
-		<appender-ref ref="DEFAULT_LOG_FILE" />
-	</logger>
-    <logger name="org.mybatis" level="INFO" additivity="false">
-        <appender-ref ref="CONSOLE" />
-        <appender-ref ref="DEFAULT_LOG_FILE" />
+    <logger name="com.project" level="DEBUG" additivity="false">
+        <appender-ref ref="CONSOLE"/>
     </logger>
-	<logger name="org.apache.ibatis" level="INFO" additivity="false">
-		<appender-ref ref="CONSOLE" />
-		<appender-ref ref="DEFAULT_LOG_FILE" />
-	</logger>
 
-	<logger name="jdbc.audit" level="WARN" additivity="false">
-		<appender-ref ref="CONSOLE" />
-		<appender-ref ref="DEFAULT_LOG_FILE" />
-	</logger>
-	<logger name="jdbc.sqltiming" level="WARN" additivity="false">
-		<appender-ref ref="CONSOLE" />
-		<appender-ref ref="DEFAULT_LOG_FILE" />
-	</logger>
-	<logger name="jdbc.resultset" level="WARN" additivity="false">
-		<appender-ref ref="CONSOLE" />
-		<appender-ref ref="DEFAULT_LOG_FILE" />
-	</logger>
-	<logger name="com.navercorp.lucy.security.xss" level="INFO" additivity="false">
-		<appender-ref ref="CONSOLE" />
-		<appender-ref ref="DEFAULT_LOG_FILE" />
-	</logger>
+    <!-- 3rdparty Loggers -->
+    <logger name="org.springframework" level="DEBUG" additivity="false">
+        <appender-ref ref="CONSOLE"/>
+    </logger>
+    <logger name="org.hibernate" level="INFO" additivity="false">
+        <appender-ref ref="CONSOLE"/>
+    </logger>
+    <logger name="org.jboss.logging" level="INFO" additivity="false">
+        <appender-ref ref="CONSOLE"/>
+    </logger>
+    <logger name="org.apache.commons" level="INFO" additivity="false">
+        <appender-ref ref="CONSOLE"/>
+    </logger>
+    <logger name="org.apache.tiles" level="INFO" additivity="false">
+        <appender-ref ref="CONSOLE"/>
+    </logger>
+    <logger name="org.thymeleaf" level="INFO" additivity="false">
+        <appender-ref ref="CONSOLE"/>
+    </logger>
 
-	<root level="DEBUG">
-		<appender-ref ref="CONSOLE" />
-		<appender-ref ref="DEFAULT_LOG_FILE" />
-	</root>
-	
+    <!-- JDBC Loggers -->
+    <logger name="com.zaxxer.hikari" level="INFO" additivity="false">
+        <appender-ref ref="CONSOLE"/>
+    </logger>
+    <logger name="log4jdbc" level="INFO" additivity="false">
+        <appender-ref ref="CONSOLE"/>
+    </logger>
+    <logger name="org.mybatis" level="INFO" additivity="false">
+        <appender-ref ref="CONSOLE"/>
+    </logger>
+    <logger name="org.apache.ibatis" level="INFO" additivity="false">
+        <appender-ref ref="CONSOLE"/>
+    </logger>
+    <logger name="org.mariadb" level="INFO" additivity="false">
+        <appender-ref ref="CONSOLE"/>
+    </logger>
+
+    <logger name="jdbc.connection" level="INFO" additivity="false">
+        <appender-ref ref="CONSOLE"/>
+    </logger>
+    <logger name="jdbc.audit" level="WARN" additivity="false">
+        <appender-ref ref="CONSOLE"/>
+    </logger>
+    <logger name="jdbc.sqltiming" level="WARN" additivity="false">
+        <appender-ref ref="CONSOLE"/>
+    </logger>
+    <logger name="jdbc.resultset" level="WARN" additivity="false">
+        <appender-ref ref="CONSOLE"/>
+    </logger>
+    <logger name="com.navercorp.lucy.security.xss" level="INFO" additivity="false">
+        <appender-ref ref="CONSOLE"/>
+    </logger>
+
+    <root level="DEBUG">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+
 </configuration>
