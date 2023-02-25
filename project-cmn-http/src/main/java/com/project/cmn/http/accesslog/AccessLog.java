@@ -1,6 +1,5 @@
 package com.project.cmn.http.accesslog;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Collection;
 import java.util.Enumeration;
@@ -42,17 +41,12 @@ public class AccessLog {
 		public AccessLogDto getDto() {
 			return super.get();
 		}
-
-		@Override
-		public void remove() {
-			super.remove();
-		}
 	}
 
 	/**
-	 * ThreadLocal에서 {@link AccessLogVo}을 가져온다.
+	 * ThreadLocal에서 {@link AccessLogDto}을 가져온다.
 	 *
-	 * @return {@link AccessLogVo}
+	 * @return {@link AccessLogDto}
 	 */
 	public static AccessLogDto getAccessLogDto() {
 		return threadLocalAccessLog.getDto();
@@ -78,7 +72,7 @@ public class AccessLog {
 	/**
 	 * 종료 시 소요시간을 계산하고 {@link AccessLogDto}를 제거한다.
 	 *
-	 * @return {@link AccessLogVo}
+	 * @return {@link AccessLogDto}
 	 */
 	public AccessLogDto end() {
 		AccessLogDto accessLogDto = threadLocalAccessLog.getDto();
@@ -98,7 +92,7 @@ public class AccessLog {
 	public void setRequestHeader(HttpServletRequest request) {
 		Map<String, String> requestHeaders = new HashMap<>();
 		Enumeration<String> headerNames = request.getHeaderNames();
-		String headerName = null;
+		String headerName;
 
 		while (headerNames.hasMoreElements()) {
 			headerName = headerNames.nextElement();
@@ -165,8 +159,7 @@ public class AccessLog {
 
 		AccessLogDto accessLogDto = threadLocalAccessLog.getDto();
 
-		if (request instanceof ContentCachingRequestWrapper) {
-			ContentCachingRequestWrapper wrapper = (ContentCachingRequestWrapper) request;
+		if (request instanceof ContentCachingRequestWrapper wrapper) {
 			byte[] buff = wrapper.getContentAsByteArray();
 
 			if (buff.length > 0) {
@@ -215,27 +208,24 @@ public class AccessLog {
 	 * Response Body 정보를 {@link AccessLogDto}에 담는다.
 	 *
 	 * @param response {@link HttpServletResponse}
-	 * @throws IOException
+	 * @throws UnsupportedEncodingException {@link UnsupportedEncodingException}
 	 */
-	public void setResponseBody(HttpServletResponse response) throws IOException {
+	public void setResponseBody(HttpServletResponse response) throws UnsupportedEncodingException {
 		AccessLogDto accessLogDto = threadLocalAccessLog.getDto();
 
-		byte[] content = null;
+		byte[] content;
 
-		if (response instanceof ContentCachingResponseWrapper) {
-			ContentCachingResponseWrapper wrapper = (ContentCachingResponseWrapper) response;
-
+		if (response instanceof ContentCachingResponseWrapper wrapper) {
 			accessLogDto.setHttpStatus(wrapper.getStatus());
 
 			content = wrapper.getContentAsByteArray();
 
-			if (content != null && content.length > 0) {
+			if (content.length > 0) {
 				int length = content.length;
 
 				if (accessLogConfig.getResponseBodyLength() > 0) {
 					length = Math.min(length, accessLogConfig.getResponseBodyLength());
 				}
-
 
 				String responsePayload = new String(content, 0, length, wrapper.getCharacterEncoding());
 
