@@ -1,8 +1,15 @@
 package com.project.cmn.datasource;
 
+import com.zaxxer.hikari.HikariConfig;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 하나의 DataSource 설정
@@ -83,4 +90,58 @@ public class DataSourceItem {
      * 초단위. 기본 0(검출하지 않음). 최소 2초
      */
     private int leakDetectionThreshold;
+
+    /**
+     * 데이터소스 설정을 바탕으로 {@link com.zaxxer.hikari.HikariConfig}를 생성하여 반환한다.
+     *
+     * @return {@link com.zaxxer.hikari.HikariConfig}
+     */
+    public HikariConfig getHikariConfig() {
+        Map<String, Object> map = new HashMap<>();
+
+        // 필수 항목
+        map.put("poolName", datasourceName);
+        map.put("driverClassName", driverClassName);
+        map.put("jdbcUrl", jdbcUrl);
+        map.put("username", username);
+        map.put("password", password);
+
+        if (StringUtils.isNotBlank(connectionTestQuery)) {
+            map.put("connectionTestQuery", connectionTestQuery);
+        }
+
+        if (connectionTimeout != 0) {
+            map.put("connectionTimeout", TimeUnit.SECONDS.toMillis(connectionTimeout));
+        }
+
+        if (idleTimeout != 0) {
+            map.put("idleTimeout", TimeUnit.SECONDS.toMillis(idleTimeout));
+        }
+
+        if (keepaliveTime != 0) {
+            map.put("keepaliveTime", TimeUnit.SECONDS.toMillis(keepaliveTime));
+        }
+
+        if (maxLifetime != 0) {
+            map.put("maxLifetime", TimeUnit.SECONDS.toMillis(maxLifetime));
+        }
+
+        if (minimumIdle != 0) {
+            map.put("minimumIdle", minimumIdle);
+        }
+
+        if (maximumPoolSize != 0) {
+            map.put("maximumPoolSize", maximumPoolSize);
+        }
+
+        if (leakDetectionThreshold != 0) {
+            map.put("leakDetectionThreshold", TimeUnit.SECONDS.toMillis(leakDetectionThreshold));
+        }
+
+        Properties properties = new Properties();
+
+        properties.putAll(map);
+
+        return new HikariConfig(properties);
+    }
 }
