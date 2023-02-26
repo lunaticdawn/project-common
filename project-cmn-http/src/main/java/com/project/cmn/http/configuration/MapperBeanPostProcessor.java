@@ -2,7 +2,6 @@ package com.project.cmn.http.configuration;
 
 import com.project.cmn.datasource.DataSourceItem;
 import com.project.cmn.datasource.DataSourcesConfig;
-import com.project.cmn.http.util.JsonUtils;
 import com.project.cmn.mybatis.MyBatisConfig;
 import com.project.cmn.mybatis.MyBatisItem;
 import com.zaxxer.hikari.HikariDataSource;
@@ -14,15 +13,16 @@ import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.mapper.MapperScannerConfigurer;
 import org.springframework.beans.BeansException;
-import org.springframework.beans.MutablePropertyValues;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
-import org.springframework.beans.factory.support.*;
+import org.springframework.beans.factory.support.AbstractBeanDefinition;
+import org.springframework.beans.factory.support.BeanDefinitionBuilder;
+import org.springframework.beans.factory.support.BeanDefinitionRegistry;
+import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProcessor;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 
 import java.io.IOException;
-import java.util.Map;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -43,13 +43,12 @@ public class MapperBeanPostProcessor implements BeanDefinitionRegistryPostProces
     }
 
     private void registerDataSources(BeanDefinitionRegistry registry) {
-        GenericBeanDefinition beanDefinition;
+        AbstractBeanDefinition beanDefinition;
 
         for (DataSourceItem item : dataSourcesConfig.getDatasourceItemList()) {
-            beanDefinition = new GenericBeanDefinition();
-
-            beanDefinition.setBeanClass(HikariDataSource.class);
-            beanDefinition.setPropertyValues(new MutablePropertyValues(convert(item)));
+            beanDefinition = BeanDefinitionBuilder.genericBeanDefinition(HikariDataSource.class)
+                    .addConstructorArgValue(item.getHikariConfig())
+                    .getBeanDefinition();
 
             log.debug("# HikariDataSource Register {}", item.getDatasourceName());
             registry.registerBeanDefinition(item.getDatasourceName(), beanDefinition);
@@ -90,15 +89,6 @@ public class MapperBeanPostProcessor implements BeanDefinitionRegistryPostProces
             log.debug("# MapperScannerConfigurer Register {}", item.getSqlSessionTemplateName() + "Mapper");
             registry.registerBeanDefinition(item.getSqlSessionTemplateName() + "Mapper", mapperScannerConfigurer);
         }
-    }
-
-    private Map<String, Object> convert(DataSourceItem item) {
-        Map<String, Object> properties = (Map<String, Object>) JsonUtils.convert(item, Map.class);
-
-        properties.remove("datasourceName");
-        properties.put("poolName", item.getDatasourceName());
-
-        return properties;
     }
 
     private Resource[] getMapperLocation(MyBatisItem item) {
