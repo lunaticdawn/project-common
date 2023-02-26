@@ -3,8 +3,8 @@ package com.project.cmn.mybatis;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
+import org.springframework.boot.context.properties.bind.Binder;
+import org.springframework.core.env.Environment;
 
 import java.util.List;
 
@@ -14,9 +14,11 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-@Component
-@ConfigurationProperties(prefix = "project.mybatis")
 public class MyBatisConfig {
+    public static MyBatisConfig init(Environment env) {
+        return Binder.get(env).bind("project.mybatis", MyBatisConfig.class).get();
+    }
+
     /**
      * project.mybatis 설정 사용 여부
      */
