@@ -106,6 +106,7 @@ public class DataSourceItem {
         map.put("username", username);
         map.put("password", password);
 
+        // 선택 항목
         if (StringUtils.isNotBlank(connectionTestQuery)) {
             map.put("connectionTestQuery", connectionTestQuery);
         }
