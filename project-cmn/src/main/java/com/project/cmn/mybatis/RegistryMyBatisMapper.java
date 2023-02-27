@@ -92,7 +92,7 @@ public class RegistryMyBatisMapper implements BeanDefinitionRegistryPostProcesso
                 if (mapperResources == null) {
                     mapperResources = tempMapperResources;
                 } else {
-                    ArrayUtils.addAll(mapperResources, tempMapperResources);
+                    mapperResources = ArrayUtils.addAll(mapperResources, tempMapperResources);
                 }
             }
         } catch (IOException e) {
