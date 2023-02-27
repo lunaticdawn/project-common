@@ -16,7 +16,7 @@ import java.util.List;
 @ToString
 public class DataSourcesConfig {
     public static DataSourcesConfig init(Environment env) {
-        return Binder.get(env).bind("project.datasources", DataSourcesConfig.class).get();
+        return Binder.get(env).bindOrCreate("project.datasources", DataSourcesConfig.class);
     }
 
     /**

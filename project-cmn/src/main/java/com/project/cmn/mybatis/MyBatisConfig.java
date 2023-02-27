@@ -16,7 +16,7 @@ import java.util.List;
 @ToString
 public class MyBatisConfig {
     public static MyBatisConfig init(Environment env) {
-        return Binder.get(env).bind("project.mybatis", MyBatisConfig.class).get();
+        return Binder.get(env).bindOrCreate("project.mybatis", MyBatisConfig.class);
     }
 
     /**

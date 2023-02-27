@@ -13,7 +13,7 @@ import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProcessor;
-import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.lang.NonNull;
@@ -52,7 +52,7 @@ public class RegistryMyBatisMapper implements BeanDefinitionRegistryPostProcesso
 
             sqlSessionFacotry = BeanDefinitionBuilder.genericBeanDefinition(SqlSessionFactoryBean.class)
                     .addPropertyReference("dataSource", item.getDatasourceName())
-                    .addPropertyValue("configLocation", new ClassPathResource(item.getConfigLocation()))
+                    .addPropertyValue("configLocation", new DefaultResourceLoader().getResource(item.getConfigLocation()))
                     .addPropertyValue("mapperLocations", this.getMapperLocation(item))
                     .addPropertyValue("typeAliasesPackage", this.getTypeAliasesPackage(item))
                     .getBeanDefinition();

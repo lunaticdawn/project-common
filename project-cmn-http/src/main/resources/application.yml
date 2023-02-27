@@ -46,7 +46,7 @@ project:
       - enabled: true
         datasource-name: "conditioncoupon-ds"
         sql-session-template-name: "conditioncoupon-template"
-        config-location: "mybatis/mybatis-config.xml"
+        config-location: "classpath:mybatis/mybatis-config.xml"
         mapper-locations:
           - "classpath*:mapper/conditioncoupon/**/*.xml"
         type-aliases-packages:
@@ -55,7 +55,7 @@ project:
       - enabled: true
         datasource-name: "lmmdev11-ds"
         sql-session-template-name: "lmmdev11-template"
-        config-location: "mybatis/mybatis-config.xml"
+        config-location: "classpath:mybatis/mybatis-config.xml"
         mapper-locations:
           - "classpath*:mapper/lmmdev11/**/*.xml"
         type-aliases-packages:
