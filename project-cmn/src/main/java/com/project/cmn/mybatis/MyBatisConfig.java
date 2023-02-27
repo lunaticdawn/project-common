@@ -20,12 +20,12 @@ public class MyBatisConfig {
     }
 
     /**
-     * project.mybatis 설정 사용 여부
+     * project.mybatis 설정 사용여부
      */
-    private boolean enabled;
+    private boolean enable;
 
     /**
-     * MyBatis 설정들
+     * project.mybatis.mybatis-item-list 설정들
      */
     private List<MyBatisItem> mybatisItemList;
 }

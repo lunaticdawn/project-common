@@ -13,27 +13,27 @@ import org.springframework.util.StopWatch;
 @Aspect
 public class AccessLogAspect {
 
-	@Around(value = "execution(* com.project..*Controller.*(..)) or execution(* com.project..*Impl.*(..)) or execution(* com.project..*Mapper.*(..))")
-	public Object arroundLogging(ProceedingJoinPoint pjp) throws Throwable {
-		MethodSignature signature = (MethodSignature) pjp.getSignature();
-		String executeMethodName = signature.getMethod().getName();
+    @Around(value = "execution(* com.project..*Controller.*(..)) || execution(* com.project..*Service.*(..)) || execution(* com.project..*ServiceImpl.*(..)) || execution(* com.project..*Mapper.*(..))")
+    public Object arroundLogging(ProceedingJoinPoint pjp) throws Throwable {
+        MethodSignature signature = (MethodSignature) pjp.getSignature();
+        String executeMethodName = signature.getMethod().getName();
 
-		StopWatch stopWatch = AccessLog.getAccessLogDto().getStopWatch();
+        StopWatch stopWatch = AccessLog.getAccessLogDto().getStopWatch();
 
-		if (stopWatch != null) {
-			if (stopWatch.isRunning()) {
-				stopWatch.stop();
-			}
+        if (stopWatch != null) {
+            if (stopWatch.isRunning()) {
+                stopWatch.stop();
+            }
 
-			stopWatch.start(String.format("%s.%s", signature.getDeclaringType().getSimpleName(), executeMethodName));
-		}
+            stopWatch.start(String.format("%s.%s", signature.getDeclaringType().getSimpleName(), executeMethodName));
+        }
 
-		Object result = pjp.proceed();
+        Object result = pjp.proceed();
 
-		if (stopWatch != null && stopWatch.isRunning()) {
-			stopWatch.stop();
-		}
+        if (stopWatch != null && stopWatch.isRunning()) {
+            stopWatch.stop();
+        }
 
-		return result;
-	}
+        return result;
+    }
 }

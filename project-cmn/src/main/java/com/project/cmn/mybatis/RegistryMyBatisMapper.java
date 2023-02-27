@@ -1,10 +1,5 @@
-package com.project.cmn.http.configuration;
+package com.project.cmn.mybatis;
 
-import com.project.cmn.datasource.DataSourceItem;
-import com.project.cmn.datasource.DataSourcesConfig;
-import com.project.cmn.mybatis.MyBatisConfig;
-import com.project.cmn.mybatis.MyBatisItem;
-import com.zaxxer.hikari.HikariDataSource;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ArrayUtils;
@@ -21,45 +16,40 @@ import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProce
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.springframework.lang.NonNull;
 
 import java.io.IOException;
 
 @Slf4j
 @RequiredArgsConstructor
-public class MapperBeanPostProcessor implements BeanDefinitionRegistryPostProcessor {
-    private final DataSourcesConfig dataSourcesConfig;
+public class RegistryMyBatisMapper implements BeanDefinitionRegistryPostProcessor {
     private final MyBatisConfig myBatisConfig;
 
     @Override
-    public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) throws BeansException {
-        registerDataSources(registry);
+    public void postProcessBeanDefinitionRegistry(@NonNull BeanDefinitionRegistry registry) throws BeansException {
         registerSqlSessionTemplate(registry);
-        registerMapperScanner(registry);
     }
 
     @Override
-    public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
-// 나중에 뭐에 쓸지 고민해봅시다.
+    public void postProcessBeanFactory(@NonNull ConfigurableListableBeanFactory beanFactory) throws BeansException {
+        log.debug("# postProcessBeanFactory");
     }
 
-    private void registerDataSources(BeanDefinitionRegistry registry) {
-        AbstractBeanDefinition beanDefinition;
-
-        for (DataSourceItem item : dataSourcesConfig.getDatasourceItemList()) {
-            beanDefinition = BeanDefinitionBuilder.genericBeanDefinition(HikariDataSource.class)
-                    .addConstructorArgValue(item.getHikariConfig())
-                    .getBeanDefinition();
-
-            log.debug("# HikariDataSource Register {}", item.getDatasourceName());
-            registry.registerBeanDefinition(item.getDatasourceName(), beanDefinition);
-        }
-    }
-
+    /**
+     * {@link SqlSessionTemplate}과 {@link MapperScannerConfigurer}를 등록한다.
+     *
+     * @param registry {@link BeanDefinitionRegistry}
+     */
     private void registerSqlSessionTemplate(BeanDefinitionRegistry registry) {
         AbstractBeanDefinition sqlSessionFacotry;
         AbstractBeanDefinition sqlSessionTemplate;
+        AbstractBeanDefinition mapperScannerConfigurer;
 
         for (MyBatisItem item : myBatisConfig.getMybatisItemList()) {
+            if (!item.isEnabled()) {
+                continue;
+            }
+
             sqlSessionFacotry = BeanDefinitionBuilder.genericBeanDefinition(SqlSessionFactoryBean.class)
                     .addPropertyReference("dataSource", item.getDatasourceName())
                     .addPropertyValue("configLocation", new ClassPathResource(item.getConfigLocation()))
@@ -73,24 +63,24 @@ public class MapperBeanPostProcessor implements BeanDefinitionRegistryPostProces
 
             log.debug("# SqlSessionTemplate Register {}", item.getSqlSessionTemplateName());
             registry.registerBeanDefinition(item.getSqlSessionTemplateName(), sqlSessionTemplate);
-        }
-    }
 
-    private void registerMapperScanner(BeanDefinitionRegistry registry) {
-        AbstractBeanDefinition mapperScannerConfigurer;
-
-        for (MyBatisItem item : myBatisConfig.getMybatisItemList()) {
             mapperScannerConfigurer = BeanDefinitionBuilder.genericBeanDefinition(MapperScannerConfigurer.class)
                     .addPropertyValue("sqlSessionTemplateBeanName", item.getSqlSessionTemplateName())
                     .addPropertyValue("basePackage", item.getMapperPackage())
                     .addPropertyValue("annotationClass", Mapper.class)
                     .getBeanDefinition();
 
-            log.debug("# MapperScannerConfigurer Register {}", item.getSqlSessionTemplateName() + "Mapper");
-            registry.registerBeanDefinition(item.getSqlSessionTemplateName() + "Mapper", mapperScannerConfigurer);
+            log.debug("# MapperScannerConfigurer Register {}", item.getSqlSessionTemplateName() + "-mapper");
+            registry.registerBeanDefinition(item.getSqlSessionTemplateName() + "-mapper", mapperScannerConfigurer);
         }
     }
 
+    /**
+     * Mapper 위치에 대한 설정 정보를 {@link SqlSessionFactoryBean}에 등록할 수 있는 형태로 변경한다.
+     *
+     * @param item {@link MyBatisItem}
+     * @return Mapper 위치에 대한 설정 정보를 {@link SqlSessionFactoryBean}에 등록할 수 있는 형태로 변경한 {@link Resource} 배열
+     */
     private Resource[] getMapperLocation(MyBatisItem item) {
         Resource[] mapperResources = null;
         Resource[] tempMapperResources;
@@ -112,6 +102,12 @@ public class MapperBeanPostProcessor implements BeanDefinitionRegistryPostProces
         return mapperResources;
     }
 
+    /**
+     * Type Alias에 대한 설정 정보를 {@link SqlSessionFactoryBean}에 등록할 수 있는 형태로 변경한다.
+     *
+     * @param item {@link MyBatisItem}
+     * @return Type Alias에 대한 설정 정보를 {@link SqlSessionFactoryBean}에 등록할 수 있는 형태로 변경한 문자열
+     */
     private String getTypeAliasesPackage(MyBatisItem item) {
         StringBuilder sb = new StringBuilder();
 

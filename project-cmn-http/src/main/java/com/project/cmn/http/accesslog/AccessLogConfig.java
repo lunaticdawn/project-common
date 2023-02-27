@@ -26,27 +26,27 @@ public class AccessLogConfig {
     /**
      * Request Header의 로깅 여부. default: false
      */
-    private boolean isRequestHeader;
+    private boolean requestHeader;
 
     /**
      * Request Parameter의 로깅 여부. default: false
      */
-    private boolean isRequestParam;
+    private boolean requestParam;
 
     /**
      * Request Body의 로깅 여부. default: false
      */
-    private boolean isRequestBody;
+    private boolean requestBody;
 
     /**
      * Response Header의 로깅 여부. default: false
      */
-    private boolean isResponseHeader;
+    private boolean responseHeader;
 
     /**
      * Response Body의 로깅 여부. default: false
      */
-    private boolean isResponseBody;
+    private boolean responseBody;
 
     /**
      * 로깅할 Request Body의 길이. default: 0 - 전체를 로깅

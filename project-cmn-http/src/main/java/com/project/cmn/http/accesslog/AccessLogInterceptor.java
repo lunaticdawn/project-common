@@ -1,18 +1,20 @@
 package com.project.cmn.http.accesslog;
 
 
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.lang.Nullable;
-import org.springframework.util.StopWatch;
-import org.springframework.web.servlet.HandlerInterceptor;
-import org.springframework.web.servlet.ModelAndView;
-
 import com.project.cmn.http.util.JsonUtils;
-
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.MDC;
+import org.springframework.http.MediaType;
+import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
+import org.springframework.util.StopWatch;
+import org.springframework.web.servlet.HandlerInterceptor;
+
+import java.io.IOException;
 
 /**
  * {@link HttpServletRequest}와 {@link HttpServletResponse}를 분석하여 접근로그에 대한 정보를 {@link AccessLogDto}에 담고, 로깅한다.
@@ -20,126 +22,136 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 public class AccessLogInterceptor implements HandlerInterceptor {
-	private final AccessLog accessLog;
-	private final AccessLogConfig accessLogConfig;
+    private final AccessLog accessLog;
+    private final AccessLogConfig accessLogConfig;
 
-	@Override
-	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-		accessLog.start(request, accessLogConfig);
-		accessLog.setRequestHeader(request);
-		accessLog.setRequestParam(request);
+    @Override
+    public boolean preHandle(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull Object handler) {
+        accessLog.start(request);
+        accessLog.setRequestHeader(request);
+        accessLog.setRequestParam(request);
 
-		this.getRequestInfoLog(AccessLog.getAccessLogDto());
+        this.logRequestHeader(AccessLog.getAccessLogDto());
 
-		return true;
-	}
+        return true;
+    }
 
-	@Override
-	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, @Nullable ModelAndView modelAndView) throws Exception {
-	}
+    @Override
+    public void afterCompletion(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull Object handler, @Nullable Exception ex) throws Exception {
+        accessLog.setRequestBody(request);
+        accessLog.setResponseHeader(response);
+        accessLog.setResponseBody(response);
 
-	@Override
-	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, @Nullable Exception ex) throws Exception {
-		accessLog.setRequestBody(request);
-		accessLog.setResponseHeader(response);
-		accessLog.setResponseBody(response);
+        AccessLogDto accessLogDto = accessLog.end();
 
-		AccessLogDto accessLogDto = accessLog.end();
+        this.logRequestBody(accessLogDto);
+        this.getResponseLogStr(accessLogDto);
 
-		this.getRequestBodyLogStr(accessLogDto);
-		this.getResponseLogStr(accessLogDto);
+        StopWatch stopWatch = accessLogDto.getStopWatch();
 
-		StopWatch stopWatch = accessLogDto.getStopWatch();
+        if (stopWatch != null) {
+            if (stopWatch.isRunning()) {
+                stopWatch.stop();
+            }
 
-		if (stopWatch != null) {
-			if (stopWatch.isRunning()) {
-				stopWatch.stop();
-			}
+            if (log.isDebugEnabled()) {
+                log.debug("\n{}", stopWatch.prettyPrint());
+            }
+        }
 
-			if (log.isDebugEnabled()) {
-				log.debug("\n{}", stopWatch.prettyPrint());
-			}
-		}
-	}
+        MDC.clear();
+    }
 
-	private void getRequestInfoLog(AccessLogDto accessLogDto) {
-		StringBuilder buff = new StringBuilder();
+    /**
+     * {@link HttpServletRequest}의 Header 정보를 바탕으로 한 요청 로그를 출력한다.
+     *
+     * @param accessLogDto {@link AccessLogDto}
+     */
+    private void logRequestHeader(AccessLogDto accessLogDto) {
+        StringBuilder buff = new StringBuilder();
 
-		buff.append("\n");
-		buff.append("-------------------- REQUEST INFO START --------------------");
-		buff.append("\n");
-		buff.append(String.format("-- URL: %s %s", accessLogDto.getRequestMethod(), accessLogDto.getRequestUri()));
-		buff.append("\n");
+        buff.append("\n");
+        buff.append("-------------------- REQUEST INFO START --------------------");
+        buff.append("\n");
+        buff.append(String.format("-- URL: %s %s", accessLogDto.getRequestMethod(), accessLogDto.getRequestUri()));
+        buff.append("\n");
 
-		if (accessLogConfig.isRequestHeader()) {
-			buff.append(String.format("-- HEADER: %s", accessLogDto.getRequestHeader()));
-			buff.append("\n");
-		}
+        if (accessLogConfig.isRequestHeader()) {
+            buff.append(String.format("-- HEADER: %s", accessLogDto.getRequestHeader()));
+            buff.append("\n");
+        }
 
-		if (accessLogConfig.isRequestParam()) {
-			buff.append(String.format("-- PARAM: %s", accessLogDto.getRequestParam()));
-			buff.append("\n");
-		}
+        if (accessLogConfig.isRequestParam()) {
+            buff.append(String.format("-- PARAM: %s", accessLogDto.getRequestParam()));
+            buff.append("\n");
+        }
 
-		buff.append("-------------------- REQUEST INFO END   --------------------");
+        buff.append("-------------------- REQUEST INFO END   --------------------");
 
-		log.info(buff.toString());
-	}
+        log.info(buff.toString());
+    }
 
-	private void getRequestBodyLogStr(AccessLogDto accessLogDto) {
-		if (accessLogConfig.isRequestBody()) {
-			StringBuilder buff = new StringBuilder();
+    /**
+     * {@link HttpServletRequest}의 Body 정보를 출력한다.
+     * Request의 Content-Type이 application/json인 경우에만 Body를 저장
+     *
+     * @param accessLogDto {@link AccessLogDto}
+     */
+    private void logRequestBody(AccessLogDto accessLogDto) {
+        if (accessLogConfig.isRequestBody()
+                && StringUtils.startsWith(accessLogDto.getRequestHeader().get("content-type"), MediaType.APPLICATION_JSON_VALUE)) {
+            StringBuilder buff = new StringBuilder();
 
-			buff.append("\n");
-			buff.append("-------------------- REQUEST BODY START --------------------");
-			buff.append("\n");
+            buff.append("\n");
+            buff.append("-------------------- REQUEST BODY START --------------------");
+            buff.append("\n");
 
-			if (StringUtils.isNotEmpty(accessLogDto.getRequestPayload())) {
-				buff.append(accessLogDto.getRequestPayload());
-			}
+            if (StringUtils.isNotBlank(accessLogDto.getRequestPayload())) {
+                try {
+                    buff.append(JsonUtils.getJsonPretty(accessLogDto.getRequestPayload()));
+                } catch (IOException e) {
+                    buff.append(accessLogDto.getRequestPayload());
+                }
+            } else {
+                buff.append("Request content is null or missing.");
+            }
 
-			buff.append("\n");
-			buff.append("-------------------- REQUEST BODY END   --------------------");
+            buff.append("\n");
+            buff.append("-------------------- REQUEST BODY END   --------------------");
 
-			log.info(buff.toString());
-		}
-	}
+            log.info(buff.toString());
+        }
+    }
 
-	private void getResponseLogStr(AccessLogDto accessLogDto) {
-		if (accessLogConfig.isResponseHeader() || accessLogConfig.isResponseBody()) {
-			StringBuilder buff = new StringBuilder();
+    private void getResponseLogStr(AccessLogDto accessLogDto) {
+        if (accessLogConfig.isResponseHeader() || accessLogConfig.isResponseBody()) {
+            StringBuilder buff = new StringBuilder();
 
-			buff.append("\n");
-			buff.append("-------------------- RESPONSE START --------------------");
-			buff.append("\n");
+            buff.append("\n");
+            buff.append("-------------------- RESPONSE START --------------------");
+            buff.append("\n");
 
-			if (accessLogConfig.isResponseHeader()) {
-				buff.append(String.format("-- HEADER: %s", accessLogDto.getResponseHeader()));
-				buff.append("\n");
-			}
+            if (accessLogConfig.isResponseHeader()) {
+                buff.append(String.format("-- HEADER: %s", accessLogDto.getResponseHeader()));
+                buff.append("\n");
+            }
 
-			if (accessLogConfig.isResponseBody()) {
-				try {
-					if (StringUtils.isNotBlank(accessLogDto.getResponsePayload())) {
-						buff.append("-- BODY:\n");
+            if (accessLogConfig.isResponseBody()) {
+                if (StringUtils.isNotBlank(accessLogDto.getResponsePayload())) {
+                    try {
+                        buff.append(JsonUtils.getJsonPretty(accessLogDto.getResponsePayload()));
+                    } catch (IOException e) {
+                        buff.append(accessLogDto.getResponsePayload());
+                    }
+                } else {
+                    buff.append("-- BODY: Unhandled response.");
+                }
+            }
 
-						if (StringUtils.startsWith(accessLogDto.getResponsePayload(), "{") && StringUtils.endsWith(accessLogDto.getResponsePayload(), "}")) {
-							buff.append(JsonUtils.getJsonPretty(accessLogDto.getResponsePayload()));
-						} else {
-							buff.append(accessLogDto.getResponsePayload());
-						}
-					} else {
-						buff.append("-- BODY: null");
-					}
-				} catch (Exception e) {
-					log.warn(e.getLocalizedMessage());
-				}
-			}
+            buff.append("\n");
+            buff.append("-------------------- RESPONSE END   --------------------");
 
-			buff.append("\n");
-			buff.append("-------------------- RESPONSE END   --------------------");
-
-			log.info(buff.toString());
-		}
-	}
+            log.info(buff.toString());
+        }
+    }
 }

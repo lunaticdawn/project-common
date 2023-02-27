@@ -14,6 +14,11 @@ import java.util.List;
 @ToString
 public class MyBatisItem {
     /**
+     * 설정 사용 여부
+     */
+    private boolean enabled;
+
+    /**
      * 사용할 DataSource 명
      */
     private String datasourceName;

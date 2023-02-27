@@ -25,21 +25,26 @@ project:
     enabled: true
     datasource-item-list:
       - datasource-name: "conditioncoupon-ds"
+        enabled: true
         driver-class-name: "net.sf.log4jdbc.sql.jdbcapi.DriverSpy"
         jdbc-url: "jdbc:log4jdbc:mariadb://10.90.1.220:3306/conditioncoupon_db?useSSL=false&allowMultiQueries=true"
         username: "conditioncoupon"
         password: "conditioncoupon!@34"
         maximum-pool-size: 5
+        lazy-connection: true
       - datasource-name: "lmmdev11-ds"
+        enabled: true
         driver-class-name: "net.sf.log4jdbc.sql.jdbcapi.DriverSpy"
         jdbc-url: "jdbc:log4jdbc:oracle:thin:@devdb11.lemonm.kr:1521:lmmdev11"
         username: "daelim"
         password: "daelimroqkf1"
         maximum-pool-size: 5
+        lazy-connection: true
   mybatis:
     enabled: true
     mybatis-item-list:
-      - datasource-name: "conditioncoupon-ds"
+      - enabled: true
+        datasource-name: "conditioncoupon-ds"
         sql-session-template-name: "conditioncoupon-template"
         config-location: "mybatis/mybatis-config.xml"
         mapper-locations:
@@ -47,7 +52,8 @@ project:
         type-aliases-packages:
           - "com.project.cmn.http.persistence.conditioncoupon.model"
         mapper-package: "com.project.cmn.http.persistence.conditioncoupon.mapper"
-      - datasource-name: "lmmdev11-ds"
+      - enabled: true
+        datasource-name: "lmmdev11-ds"
         sql-session-template-name: "lmmdev11-template"
         config-location: "mybatis/mybatis-config.xml"
         mapper-locations:
