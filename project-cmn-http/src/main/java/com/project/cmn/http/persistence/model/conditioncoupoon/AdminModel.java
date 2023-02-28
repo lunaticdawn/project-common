@@ -1,4 +1,4 @@
-package com.project.cmn.http.persistence.conditioncoupon.model;
+package com.project.cmn.http.persistence.model.conditioncoupoon;
 
 import lombok.Getter;
 import lombok.Setter;

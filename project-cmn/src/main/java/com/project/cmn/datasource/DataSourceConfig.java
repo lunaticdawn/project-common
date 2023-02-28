@@ -14,9 +14,9 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-public class DataSourcesConfig {
-    public static DataSourcesConfig init(Environment env) {
-        return Binder.get(env).bindOrCreate("project.datasources", DataSourcesConfig.class);
+public class DataSourceConfig {
+    public static DataSourceConfig init(Environment env) {
+        return Binder.get(env).bindOrCreate("project.datasource", DataSourceConfig.class);
     }
 
     /**
@@ -27,5 +27,5 @@ public class DataSourcesConfig {
     /**
      * project.datasources.datasource-item-list 설정들
      */
-    private List<DataSourceItem> datasourceItemList;
+    private List<DataSourceItem> itemList;
 }

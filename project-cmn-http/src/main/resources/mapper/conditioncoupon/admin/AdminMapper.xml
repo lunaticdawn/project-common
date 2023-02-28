@@ -2,8 +2,8 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.project.cmn.http.persistence.conditioncoupon.mapper.AdminMapper">
-    <select id="selectAdmin" resultType="com.project.cmn.http.persistence.conditioncoupon.model.AdminModel">
+<mapper namespace="com.project.cmn.http.persistence.mapper.conditioncoupon.AdminMapper">
+    <select id="selectAdmin" resultType="com.project.cmn.http.persistence.model.conditioncoupoon.AdminModel">
         SELECT ADMIN_NUM
              , ADMIN_ID
              , PASSWD

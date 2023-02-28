@@ -1,6 +1,6 @@
-package com.project.cmn.http.persistence.conditioncoupon.mapper;
+package com.project.cmn.http.persistence.mapper.conditioncoupon;
 
-import com.project.cmn.http.persistence.conditioncoupon.model.AdminModel;
+import com.project.cmn.http.persistence.model.conditioncoupoon.AdminModel;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

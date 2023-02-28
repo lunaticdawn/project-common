@@ -1,4 +1,4 @@
-package com.project.cmn.http.persistence.lmmdev11.model;
+package com.project.cmn.http.persistence.model.lmmdev11;
 
 import lombok.Getter;
 import lombok.Setter;

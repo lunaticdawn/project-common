@@ -19,6 +19,11 @@ public class MyBatisItem {
     private boolean enabled;
 
     /**
+     * @Primary 선언 여부
+     */
+    private boolean primary;
+
+    /**
      * 사용할 DataSource 명
      */
     private String datasourceName;

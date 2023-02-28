@@ -1,8 +1,8 @@
 package com.project.cmn.http.admin;
 
-import com.project.cmn.http.persistence.conditioncoupon.mapper.AdminMapper;
-import com.project.cmn.http.persistence.conditioncoupon.model.AdminModel;
-import com.project.cmn.http.persistence.lmmdev11.mapper.Lmmdev11AdminMapper;
+import com.project.cmn.http.persistence.mapper.conditioncoupon.AdminMapper;
+import com.project.cmn.http.persistence.mapper.lmmdev11.Lmmdev11AdminMapper;
+import com.project.cmn.http.persistence.model.conditioncoupoon.AdminModel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

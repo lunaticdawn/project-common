@@ -2,8 +2,8 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.project.cmn.http.persistence.lmmdev11.mapper.Lmmdev11AdminMapper">
-    <select id="selectAdmin" resultType="com.project.cmn.http.persistence.lmmdev11.model.Lmmdev11AdminModel">
+<mapper namespace="com.project.cmn.http.persistence.mapper.lmmdev11.Lmmdev11AdminMapper">
+    <select id="selectAdmin" resultType="com.project.cmn.http.persistence.model.lmmdev11.Lmmdev11AdminModel">
         /* lmmdev11.mapper.AdminMapper.selectAdmin */
         SELECT ADMIN_NO
              , BRANCH_ID

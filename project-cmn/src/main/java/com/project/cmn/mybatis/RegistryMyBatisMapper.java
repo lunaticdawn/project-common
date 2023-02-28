@@ -45,7 +45,7 @@ public class RegistryMyBatisMapper implements BeanDefinitionRegistryPostProcesso
         AbstractBeanDefinition sqlSessionTemplate;
         AbstractBeanDefinition mapperScannerConfigurer;
 
-        for (MyBatisItem item : myBatisConfig.getMybatisItemList()) {
+        for (MyBatisItem item : myBatisConfig.getItemList()) {
             if (!item.isEnabled()) {
                 continue;
             }
@@ -59,6 +59,7 @@ public class RegistryMyBatisMapper implements BeanDefinitionRegistryPostProcesso
 
             sqlSessionTemplate = BeanDefinitionBuilder.genericBeanDefinition(SqlSessionTemplate.class)
                     .addConstructorArgValue(sqlSessionFacotry)
+                    .setPrimary(item.isPrimary())
                     .getBeanDefinition();
 
             log.debug("# SqlSessionTemplate Register {}", item.getSqlSessionTemplateName());

@@ -1,6 +1,6 @@
-package com.project.cmn.http.persistence.lmmdev11.mapper;
+package com.project.cmn.http.persistence.mapper.lmmdev11;
 
-import com.project.cmn.http.persistence.lmmdev11.model.Lmmdev11AdminModel;
+import com.project.cmn.http.persistence.model.lmmdev11.Lmmdev11AdminModel;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

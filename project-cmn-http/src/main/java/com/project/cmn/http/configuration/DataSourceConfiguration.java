@@ -1,7 +1,7 @@
 package com.project.cmn.http.configuration;
 
-import com.project.cmn.datasource.DataSourcesConfig;
-import com.project.cmn.datasource.RegistryDataSources;
+import com.project.cmn.datasource.DataSourceConfig;
+import com.project.cmn.datasource.RegistryDataSource;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -15,13 +15,13 @@ public class DataSourceConfiguration {
      * project.datasources에 있는 설정을 바탕으로 DataSource를 등록한다.
      *
      * @param env {@link Environment}
-     * @return {@link RegistryDataSources}
+     * @return {@link RegistryDataSource}
      */
     @Bean
-    @ConditionalOnProperty(prefix = "project.datasources", value = "enabled", havingValue = "true")
-    public RegistryDataSources createDataSources(Environment env) {
-        DataSourcesConfig dataSourcesConfig = DataSourcesConfig.init(env);
+    @ConditionalOnProperty(prefix = "project.datasource", value = "enabled", havingValue = "true")
+    public RegistryDataSource createDataSources(Environment env) {
+        DataSourceConfig dataSourceConfig = DataSourceConfig.init(env);
 
-        return new RegistryDataSources(dataSourcesConfig);
+        return new RegistryDataSource(dataSourceConfig);
     }
 }

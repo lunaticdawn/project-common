@@ -21,43 +21,65 @@ project:
     request-header-names:
     response-header-names:
     exclude-path-patterns:
-  datasources:
+
+  datasource:
     enabled: true
-    datasource-item-list:
-      - datasource-name: "conditioncoupon-ds"
-        enabled: true
+    item-list:
+      - enabled: true
+        primary: true
+        lazy-connection: true
+        datasource-name: "conditioncoupon-ds"
+        transaction-name: "conditioncoupon-tx"
         driver-class-name: "net.sf.log4jdbc.sql.jdbcapi.DriverSpy"
         jdbc-url: "jdbc:log4jdbc:mariadb://10.90.1.220:3306/conditioncoupon_db?useSSL=false&allowMultiQueries=true"
         username: "conditioncoupon"
         password: "conditioncoupon!@34"
         maximum-pool-size: 5
+      - enabled: true
         lazy-connection: true
-      - datasource-name: "lmmdev11-ds"
-        enabled: true
+        datasource-name: "lmmdev11-ds"
+        transaction-name: "lmmdev11-tx"
         driver-class-name: "net.sf.log4jdbc.sql.jdbcapi.DriverSpy"
-        jdbc-url: "jdbc:log4jdbc:oracle:thin:@devdb11.lemonm.kr:1521:lmmdev11"
+        jdbc-url: "jdbc:log4jdbc:oracle:thin:@devdb11.lemonm.kr:1522:lmmdev11"
         username: "daelim"
         password: "daelimroqkf1"
         maximum-pool-size: 5
-        lazy-connection: true
+
+  jta:
+    enabled: false
+    item-list:
+      - unique-resource-name: "conditioncoupon-xa"
+        xa-data-source-class-name: "org.mariadb.jdbc.MariaDbDataSource"
+        url: "jdbc:mariadb://10.90.1.220:3306/conditioncoupon_db?useSSL=false&allowMultiQueries=true"
+        user: "conditioncoupon"
+        password: "conditioncoupon!@34"
+        pool-size: 3
+      - unique-resource-name: "lmmdev11-xa"
+        xa-data-source-class-name: "oracle.jdbc.xa.client.OracleXADataSource"
+        url: "jdbc:oracle:thin:@devdb11.lemonm.kr:1521:lmmdev11"
+        user: "daelim"
+        password: "daelimroqkf1"
+        pool-size: 3
+
   mybatis:
     enabled: true
-    mybatis-item-list:
+    item-list:
       - enabled: true
+        primary: true
         datasource-name: "conditioncoupon-ds"
-        sql-session-template-name: "conditioncoupon-template"
+        sql-session-template-name: "conditioncoupon-templ"
         config-location: "classpath:mybatis/mybatis-config.xml"
         mapper-locations:
-          - "classpath*:mapper/conditioncoupon/**/*.xml"
+          - "classpath*:mapper/**/*.xml"
         type-aliases-packages:
-          - "com.project.cmn.http.persistence.conditioncoupon.model"
-        mapper-package: "com.project.cmn.http.persistence.conditioncoupon.mapper"
+          - "com.project.cmn.http.persistence.model"
+        mapper-package: "com.project.cmn.http.persistence.mapper.conditioncoupon"
       - enabled: true
         datasource-name: "lmmdev11-ds"
-        sql-session-template-name: "lmmdev11-template"
+        sql-session-template-name: "lmmdev11-templ"
         config-location: "classpath:mybatis/mybatis-config.xml"
         mapper-locations:
-          - "classpath*:mapper/lmmdev11/**/*.xml"
+          - "classpath*:mapper/**/*.xml"
         type-aliases-packages:
-          - "com.project.cmn.http.persistence.lmmdev11.model"
-        mapper-package: "com.project.cmn.http.persistence.lmmdev11.mapper"
+          - "com.project.cmn.http.persistence.model"
+        mapper-package: "com.project.cmn.http.persistence.mapper.lmmdev11"

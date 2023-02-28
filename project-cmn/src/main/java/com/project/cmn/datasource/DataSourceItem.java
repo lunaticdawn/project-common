@@ -19,14 +19,29 @@ import java.util.concurrent.TimeUnit;
 @ToString
 public class DataSourceItem {
     /**
+     * DataSource 사용여부
+     */
+    private boolean enabled;
+
+    /**
+     * @Primary 선언 여부
+     */
+    private boolean primary;
+
+    /**
+     * {@link org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy} 사용여부
+     */
+    private boolean lazyConnection;
+
+    /**
      * DataSource 이름. 필수
      */
     private String datasourceName;
 
     /**
-     * DataSource 사용여부
+     * Transaction 이름. 옵션. 없으면 생성안함
      */
-    private boolean enabled;
+    private String transactionName;
 
     /**
      * JDBC 드라이버 클래스명. 필수
@@ -95,11 +110,6 @@ public class DataSourceItem {
      * 초단위. 기본 0(검출하지 않음). 최소 2초
      */
     private int leakDetectionThreshold;
-
-    /**
-     * {@link org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy} 사용여부
-     */
-    private boolean lazyConnection;
 
     /**
      * 데이터소스 설정을 바탕으로 {@link com.zaxxer.hikari.HikariConfig}를 생성하여 반환한다.

@@ -27,5 +27,5 @@ public class MyBatisConfig {
     /**
      * project.mybatis.mybatis-item-list 설정들
      */
-    private List<MyBatisItem> mybatisItemList;
+    private List<MyBatisItem> itemList;
 }
