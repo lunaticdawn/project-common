@@ -26,6 +26,11 @@
             <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.bgee.log4jdbc-log4j2</groupId>
+            <artifactId>log4jdbc-log4j2-jdbc4.1</artifactId>
+            <version>1.16</version>
+        </dependency>
+        <dependency>
             <groupId>org.mariadb.jdbc</groupId>
             <artifactId>mariadb-java-client</artifactId>
             <version>3.1.2</version>
@@ -39,11 +44,6 @@
             <groupId>com.oracle.database.nls</groupId>
             <artifactId>orai18n</artifactId>
             <version>21.9.0.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.bgee.log4jdbc-log4j2</groupId>
-            <artifactId>log4jdbc-log4j2-jdbc4.1</artifactId>
-            <version>1.16</version>
         </dependency>
     </dependencies>
 </project>

@@ -2,8 +2,8 @@ package com.project.cmn.datasource;
 
 import com.project.cmn.datasource.jta.XADataSourceConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import io.micrometer.common.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
