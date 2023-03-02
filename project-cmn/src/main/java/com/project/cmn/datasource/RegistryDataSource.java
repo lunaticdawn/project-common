@@ -90,6 +90,7 @@ public class RegistryDataSource implements BeanDefinitionRegistryPostProcessor, 
 
             beanDefinition = BeanDefinitionBuilder.genericBeanDefinition(DataSourceTransactionManager.class)
                     .addConstructorArgReference(item.getDatasourceName())
+                    .setPrimary(item.isPrimary())
                     .getBeanDefinition();
 
             log.info("# Transaction({}) Register.", item.getTransactionName());

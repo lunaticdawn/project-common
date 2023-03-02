@@ -6,6 +6,8 @@ spring:
     exclude:
       - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
       - org.springframework.boot.autoconfigure.jdbc.XADataSourceAutoConfiguration
+  jta:
+    enabled: false
 
 project:
   access.log:
@@ -47,7 +49,7 @@ project:
         connection-timeout: 3
 
   xa-datasource:
-    enabled: true
+    enabled: false
     item-list:
       - enabled: true
         unique-resource-name: "conditioncoupon-xa"
@@ -69,7 +71,7 @@ project:
     item-list:
       - enabled: true
         primary: true
-        datasource-name: "conditioncoupon-xa"
+        datasource-name: "conditioncoupon-ds"
         sql-session-template-name: "conditioncoupon-templ"
         config-location: "classpath:mybatis/mybatis-config.xml"
         mapper-locations:
@@ -78,7 +80,7 @@ project:
           - "com.project.cmn.http.persistence.model"
         mapper-package: "com.project.cmn.http.persistence.mapper.conditioncoupon"
       - enabled: true
-        datasource-name: "lmmdev11-xa"
+        datasource-name: "lmmdev11-ds"
         sql-session-template-name: "lmmdev11-templ"
         config-location: "classpath:mybatis/mybatis-config.xml"
         mapper-locations:
