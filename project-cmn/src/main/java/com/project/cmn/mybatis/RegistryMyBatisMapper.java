@@ -51,7 +51,7 @@ public class RegistryMyBatisMapper implements BeanDefinitionRegistryPostProcesso
      * @param registry {@link BeanDefinitionRegistry}
      */
     private void registerSqlSessionTemplate(BeanDefinitionRegistry registry) {
-        AbstractBeanDefinition sqlSessionFacotry;
+        AbstractBeanDefinition sqlSessionFactory;
         AbstractBeanDefinition sqlSessionTemplate;
         AbstractBeanDefinition mapperScannerConfigurer;
 
@@ -60,8 +60,8 @@ public class RegistryMyBatisMapper implements BeanDefinitionRegistryPostProcesso
                 continue;
             }
 
-            // SqlSessionFacotry와 SqlSessionTemplate 중 하나만 등록하면 되기 때문에 SqlSessionTemplate만 등록
-            sqlSessionFacotry = BeanDefinitionBuilder.genericBeanDefinition(SqlSessionFactoryBean.class)
+            // SqlSessionFactory 와 SqlSessionTemplate 중 하나만 등록하면 되기 때문에 SqlSessionTemplate 만 등록
+            sqlSessionFactory = BeanDefinitionBuilder.genericBeanDefinition(SqlSessionFactoryBean.class)
                     .addPropertyReference("dataSource", item.getDatasourceName())
                     .addPropertyValue("configLocation", new DefaultResourceLoader().getResource(item.getConfigLocation()))
                     .addPropertyValue("mapperLocations", this.getMapperLocation(item))
@@ -69,7 +69,7 @@ public class RegistryMyBatisMapper implements BeanDefinitionRegistryPostProcesso
                     .getBeanDefinition();
 
             sqlSessionTemplate = BeanDefinitionBuilder.genericBeanDefinition(SqlSessionTemplate.class)
-                    .addConstructorArgValue(sqlSessionFacotry)
+                    .addConstructorArgValue(sqlSessionFactory)
                     .setPrimary(item.isPrimary())
                     .getBeanDefinition();
 
