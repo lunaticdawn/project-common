@@ -19,7 +19,7 @@ public class MyBatisItem {
     private boolean enabled;
 
     /**
-     * @Primary 선언 여부
+     * &#064;Primary  선언 여부
      */
     private boolean primary;
 
@@ -29,7 +29,12 @@ public class MyBatisItem {
     private String datasourceName;
 
     /**
-     * SqlSessionTemplate 명
+     * {@link org.apache.ibatis.session.SqlSessionFactory}의 이름
+     */
+    private String sqlSessionFactoryName;
+
+    /**
+     * {@link org.mybatis.spring.SqlSessionTemplate}의 이름
      */
     private String sqlSessionTemplateName;
 

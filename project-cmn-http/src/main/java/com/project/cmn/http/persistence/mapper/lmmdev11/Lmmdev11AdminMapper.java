@@ -7,4 +7,6 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface Lmmdev11AdminMapper {
     Lmmdev11AdminModel selectAdmin(@Param("adminId") String adminId);
+
+    int insertAdmin(Lmmdev11AdminModel model);
 }

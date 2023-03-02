@@ -5,8 +5,7 @@ spring:
   autoconfigure:
     exclude:
       - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
-      - org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration
-      - org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration
+      - org.springframework.boot.autoconfigure.jdbc.XADataSourceAutoConfiguration
 
 project:
   access.log:
@@ -29,24 +28,26 @@ project:
         primary: true
         lazy-connection: true
         datasource-name: "conditioncoupon-ds"
-        transaction-name: "conditioncoupon-tx"
+        transaction-name: "conditioncoupon-tm"
         driver-class-name: "net.sf.log4jdbc.sql.jdbcapi.DriverSpy"
-        jdbc-url: "jdbc:log4jdbc:mariadb://10.90.1.220:3306/conditioncoupon_db?useSSL=false&allowMultiQueries=true"
-        username: "conditioncoupon"
+        url: "jdbc:log4jdbc:mariadb://10.90.1.220:3306/conditioncoupon_db?useSSL=false&allowMultiQueries=true"
+        user: "conditioncoupon"
         password: "conditioncoupon!@34"
         maximum-pool-size: 5
+        connection-timeout: 3
       - enabled: true
         lazy-connection: true
         datasource-name: "lmmdev11-ds"
-        transaction-name: "lmmdev11-tx"
+        transaction-name: "lmmdev11-tm"
         driver-class-name: "net.sf.log4jdbc.sql.jdbcapi.DriverSpy"
-        jdbc-url: "jdbc:log4jdbc:oracle:thin:@devdb11.lemonm.kr:1522:lmmdev11"
-        username: "daelim"
+        url: "jdbc:log4jdbc:oracle:thin:@devdb11.lemonm.kr:1521:lmmdev11"
+        user: "daelim"
         password: "daelimroqkf1"
         maximum-pool-size: 5
+        connection-timeout: 3
 
   jta:
-    enabled: false
+    enabled: true
     item-list:
       - unique-resource-name: "conditioncoupon-xa"
         xa-data-source-class-name: "org.mariadb.jdbc.MariaDbDataSource"
@@ -66,7 +67,7 @@ project:
     item-list:
       - enabled: true
         primary: true
-        datasource-name: "conditioncoupon-ds"
+        datasource-name: "conditioncoupon-xa"
         sql-session-template-name: "conditioncoupon-templ"
         config-location: "classpath:mybatis/mybatis-config.xml"
         mapper-locations:
@@ -75,7 +76,7 @@ project:
           - "com.project.cmn.http.persistence.model"
         mapper-package: "com.project.cmn.http.persistence.mapper.conditioncoupon"
       - enabled: true
-        datasource-name: "lmmdev11-ds"
+        datasource-name: "lmmdev11-xa"
         sql-session-template-name: "lmmdev11-templ"
         config-location: "classpath:mybatis/mybatis-config.xml"
         mapper-locations:

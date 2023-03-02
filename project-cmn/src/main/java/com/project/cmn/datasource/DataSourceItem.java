@@ -24,7 +24,7 @@ public class DataSourceItem {
     private boolean enabled;
 
     /**
-     * @Primary 선언 여부
+     * Primary 선언 여부
      */
     private boolean primary;
 
@@ -51,12 +51,12 @@ public class DataSourceItem {
     /**
      * JDBC URL. 필수
      */
-    private String jdbcUrl;
+    private String url;
 
     /**
      * 사용자명. 필수
      */
-    private String username;
+    private String user;
 
     /**
      * 비밀번호. 필수
@@ -122,8 +122,8 @@ public class DataSourceItem {
         // 필수 항목
         map.put("poolName", datasourceName);
         map.put("driverClassName", driverClassName);
-        map.put("jdbcUrl", jdbcUrl);
-        map.put("username", username);
+        map.put("jdbcUrl", url);
+        map.put("username", user);
         map.put("password", password);
 
         // 선택 항목

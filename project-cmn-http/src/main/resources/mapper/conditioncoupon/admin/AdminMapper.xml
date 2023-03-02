@@ -26,4 +26,45 @@
         FROM TB_ADMIN
         WHERE ADMIN_ID = #{adminId}
     </select>
+
+    <insert id="insertAdmin">
+        INSERT INTO tb_admin( ADMIN_NUM
+                            , ADMIN_ID
+                            , PASSWD
+                            , ADMIN_NM
+                            , ROLE_ID
+                            , EMP_NO
+                            , EMAIL
+                            , TEL
+                            , HP_NUM
+                            , LAST_LOGIN_DT
+                            , PWD_INIT_YN
+                            , PWD_UPD_DT
+                            , LOGIN_FAIL_CNT
+                            , LOGIN_FAIL_DT
+                            , VALID_YN
+                            , REG_DT
+                            , REG_ID
+                            , UPD_DT
+                            , UPD_ID)
+        VALUES ( #{adminNum}
+               , #{adminId}
+               , #{passwd}
+               , #{adminNm}
+               , #{roleId}
+               , #{empNo}
+               , #{email}
+               , #{tel}
+               , #{hpNum}
+               , #{lastLoginDt}
+               , #{pwdInitYn}
+               , #{pwdUpdDt}
+               , #{loginFailCnt}
+               , #{loginFailDt}
+               , #{validYn}
+               , CURRENT_TIMESTAMP
+               , 'TEST'
+               , CURRENT_TIMESTAMP
+               , 'TEST')
+    </insert>
 </mapper>

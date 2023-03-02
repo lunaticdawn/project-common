@@ -1,6 +1,5 @@
 package com.project.cmn.mybatis;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.ibatis.annotations.Mapper;
@@ -13,6 +12,10 @@ import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProcessor;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.EnvironmentAware;
+import org.springframework.core.env.Environment;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
@@ -21,12 +24,19 @@ import org.springframework.lang.NonNull;
 import java.io.IOException;
 
 @Slf4j
-@RequiredArgsConstructor
-public class RegistryMyBatisMapper implements BeanDefinitionRegistryPostProcessor {
-    private final MyBatisConfig myBatisConfig;
+@AutoConfiguration
+@ConditionalOnProperty(prefix = "project.mybatis", value = "enabled", havingValue = "true")
+public class RegistryMyBatisMapper implements BeanDefinitionRegistryPostProcessor, EnvironmentAware {
+    private MyBatisConfig myBatisConfig;
+
+    @Override
+    public void setEnvironment(@NonNull Environment environment) {
+        this.myBatisConfig = MyBatisConfig.init(environment);
+    }
 
     @Override
     public void postProcessBeanDefinitionRegistry(@NonNull BeanDefinitionRegistry registry) throws BeansException {
+        log.debug("# RegistryMyBatisMapper");
         registerSqlSessionTemplate(registry);
     }
 
@@ -50,6 +60,7 @@ public class RegistryMyBatisMapper implements BeanDefinitionRegistryPostProcesso
                 continue;
             }
 
+            // SqlSessionFacotry와 SqlSessionTemplate 중 하나만 등록하면 되기 때문에 SqlSessionTemplate만 등록
             sqlSessionFacotry = BeanDefinitionBuilder.genericBeanDefinition(SqlSessionFactoryBean.class)
                     .addPropertyReference("dataSource", item.getDatasourceName())
                     .addPropertyValue("configLocation", new DefaultResourceLoader().getResource(item.getConfigLocation()))

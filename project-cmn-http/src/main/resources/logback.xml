@@ -33,16 +33,16 @@
     </logger>
 
     <!-- JDBC Loggers -->
-    <logger name="com.zaxxer.hikari" level="INFO" additivity="false">
+    <logger name="com.zaxxer.hikari" level="DEBUG" additivity="false">
         <appender-ref ref="CONSOLE"/>
     </logger>
-    <logger name="log4jdbc" level="INFO" additivity="false">
+    <logger name="log4jdbc" level="DEBUG" additivity="false">
         <appender-ref ref="CONSOLE"/>
     </logger>
-    <logger name="org.mybatis" level="INFO" additivity="false">
+    <logger name="org.mybatis" level="DEBUG" additivity="false">
         <appender-ref ref="CONSOLE"/>
     </logger>
-    <logger name="org.apache.ibatis" level="INFO" additivity="false">
+    <logger name="org.apache.ibatis" level="DEBUG" additivity="false">
         <appender-ref ref="CONSOLE"/>
     </logger>
     <logger name="org.mariadb" level="INFO" additivity="false">

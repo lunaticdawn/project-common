@@ -7,9 +7,7 @@ import lombok.ToString;
 import java.time.LocalDateTime;
 
 /**
- * 괸리자
- *
- * @TableName DL_ADMIN
+ * DL_ADMIN 괸리자
  */
 @Getter
 @Setter
@@ -18,85 +16,85 @@ public class Lmmdev11AdminModel {
     /**
      * 관리자NO
      */
-    private Long ADMIN_NO;
+    private Long adminNo;
 
     /**
      * 지점ID
      */
-    private Long BRANCH_ID;
+    private Long branchId;
 
     /**
      * 관리자ID
      */
-    private String ADMIN_ID;
+    private String adminId;
 
     /**
      * 비밀번호
      */
-    private String PASSWD;
+    private String passwd;
 
     /**
      * 이름
      */
-    private String ADMIN_NM;
+    private String adminNm;
 
     /**
      * 휴대전화번호
      */
-    private String HP_NUM;
+    private String hpNum;
 
     /**
      * 관리자역할ID
      */
-    private String ADMIN_ROLE_ID;
+    private String adminRoleId;
 
     /**
      * 최종로그인일시
      */
-    private LocalDateTime LAST_LOGIN_DT;
+    private LocalDateTime lastLoginDt;
 
     /**
      * 비밀번호초기화여부
      */
-    private String PWD_INIT_YN;
+    private String pwdInitYn;
 
     /**
      * 비밀번호수정일시
      */
-    private LocalDateTime PWD_MOD_DT;
+    private LocalDateTime pwdModDt;
 
     /**
      * 로그인실패수
      */
-    private Integer LOGIN_FAIL_CNT;
+    private Integer loginFailCnt;
 
     /**
      * 로그인실패일시
      */
-    private LocalDateTime LOGIN_FAIL_DT;
+    private LocalDateTime loginFailDt;
 
     /**
      * 유효여부
      */
-    private String IS_VALID;
+    private String isValid;
 
     /**
      * 등록일시
      */
-    private LocalDateTime REG_DT;
+    private LocalDateTime regDt;
 
     /**
      * 등록자
      */
-    private String REG_ID;
+    private String regId;
 
     /**
      * 수정일시
      */
-    private LocalDateTime MOD_DT;
+    private LocalDateTime modDt;
 
     /**
      * 수정자
      */
-    private String MOD_ID;
+    private String modId;
 }
