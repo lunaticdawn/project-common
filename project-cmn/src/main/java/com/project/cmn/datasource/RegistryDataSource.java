@@ -1,6 +1,6 @@
 package com.project.cmn.datasource;
 
-import com.project.cmn.datasource.jta.JtaConfig;
+import com.project.cmn.datasource.jta.XADataSourceConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
@@ -22,18 +22,19 @@ import org.springframework.lang.NonNull;
 @ConditionalOnProperty(prefix = "project.datasource", value = "enabled", havingValue = "true")
 public class RegistryDataSource implements BeanDefinitionRegistryPostProcessor, EnvironmentAware {
     private DataSourceConfig dataSourceConfig;
-    private JtaConfig jtaConfig;
+    private XADataSourceConfig xaDataSourceConfig;
 
     @Override
     public void setEnvironment(@NonNull Environment environment) {
         this.dataSourceConfig = DataSourceConfig.init(environment);
-        this.jtaConfig = JtaConfig.init(environment);
+        this.xaDataSourceConfig = XADataSourceConfig.init(environment);
     }
 
     @Override
     public void postProcessBeanDefinitionRegistry(@NonNull BeanDefinitionRegistry registry) throws BeansException {
-        if (!jtaConfig.isEnabled()) {
-            log.debug("# RegistryDataSource");
+        if (!xaDataSourceConfig.isEnabled()) {
+            log.info("# RegistryDataSource");
+
             this.registerDataSource(registry);
             this.registerTransactionManager(registry);
         }
@@ -51,28 +52,25 @@ public class RegistryDataSource implements BeanDefinitionRegistryPostProcessor, 
      */
     private void registerDataSource(BeanDefinitionRegistry registry) {
         AbstractBeanDefinition beanDefinition;
-        HikariDataSource hikariDataSource;
 
         for (DataSourceItem item : dataSourceConfig.getItemList()) {
             if (!item.isEnabled()) {
                 continue;
             }
 
-            hikariDataSource = new HikariDataSource(item.getHikariConfig());
-
             if (item.isLazyConnection()) {
                 beanDefinition = BeanDefinitionBuilder.genericBeanDefinition(LazyConnectionDataSourceProxy.class)
-                        .addConstructorArgValue(hikariDataSource)
+                        .addConstructorArgValue(new HikariDataSource(item.getHikariConfig()))
                         .setPrimary(item.isPrimary())
                         .getBeanDefinition();
             } else {
                 beanDefinition = BeanDefinitionBuilder.genericBeanDefinition(HikariDataSource.class)
-                        .addPropertyValue("dataSource", hikariDataSource)
+                        .addPropertyValue("dataSource", new HikariDataSource(item.getHikariConfig()))
                         .setPrimary(item.isPrimary())
                         .getBeanDefinition();
             }
 
-            log.debug("# DataSource Register {}", item.getDatasourceName());
+            log.info("# DataSource({}) Register.", item.getDatasourceName());
             registry.registerBeanDefinition(item.getDatasourceName(), beanDefinition);
         }
     }
@@ -94,7 +92,7 @@ public class RegistryDataSource implements BeanDefinitionRegistryPostProcessor, 
                     .addConstructorArgReference(item.getDatasourceName())
                     .getBeanDefinition();
 
-            log.debug("# Transaction Register {}", item.getTransactionName());
+            log.info("# Transaction({}) Register.", item.getTransactionName());
             registry.registerBeanDefinition(item.getTransactionName(), beanDefinition);
         }
     }

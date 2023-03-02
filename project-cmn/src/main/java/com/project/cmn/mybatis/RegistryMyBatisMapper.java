@@ -36,7 +36,7 @@ public class RegistryMyBatisMapper implements BeanDefinitionRegistryPostProcesso
 
     @Override
     public void postProcessBeanDefinitionRegistry(@NonNull BeanDefinitionRegistry registry) throws BeansException {
-        log.debug("# RegistryMyBatisMapper");
+        log.info("# RegistryMyBatisMapper");
         registerSqlSessionTemplate(registry);
     }
 
@@ -65,7 +65,7 @@ public class RegistryMyBatisMapper implements BeanDefinitionRegistryPostProcesso
                     .addPropertyReference("dataSource", item.getDatasourceName())
                     .addPropertyValue("configLocation", new DefaultResourceLoader().getResource(item.getConfigLocation()))
                     .addPropertyValue("mapperLocations", this.getMapperLocation(item))
-                    .addPropertyValue("typeAliasesPackage", this.getTypeAliasesPackage(item))
+                    .addPropertyValue("typeAliasesPackage", String.join(",", item.getTypeAliasesPackages()))
                     .getBeanDefinition();
 
             sqlSessionTemplate = BeanDefinitionBuilder.genericBeanDefinition(SqlSessionTemplate.class)
@@ -73,7 +73,7 @@ public class RegistryMyBatisMapper implements BeanDefinitionRegistryPostProcesso
                     .setPrimary(item.isPrimary())
                     .getBeanDefinition();
 
-            log.debug("# SqlSessionTemplate Register {}", item.getSqlSessionTemplateName());
+            log.info("# SqlSessionTemplate({}) Register.", item.getSqlSessionTemplateName());
             registry.registerBeanDefinition(item.getSqlSessionTemplateName(), sqlSessionTemplate);
 
             mapperScannerConfigurer = BeanDefinitionBuilder.genericBeanDefinition(MapperScannerConfigurer.class)
@@ -82,7 +82,7 @@ public class RegistryMyBatisMapper implements BeanDefinitionRegistryPostProcesso
                     .addPropertyValue("annotationClass", Mapper.class)
                     .getBeanDefinition();
 
-            log.debug("# MapperScannerConfigurer Register {}", item.getSqlSessionTemplateName() + "-mapper");
+            log.info("# MapperScannerConfigurer({}) Register", item.getSqlSessionTemplateName() + "-mapper");
             registry.registerBeanDefinition(item.getSqlSessionTemplateName() + "-mapper", mapperScannerConfigurer);
         }
     }
@@ -112,25 +112,5 @@ public class RegistryMyBatisMapper implements BeanDefinitionRegistryPostProcesso
         }
 
         return mapperResources;
-    }
-
-    /**
-     * Type Alias에 대한 설정 정보를 {@link SqlSessionFactoryBean}에 등록할 수 있는 형태로 변경한다.
-     *
-     * @param item {@link MyBatisItem}
-     * @return Type Alias에 대한 설정 정보를 {@link SqlSessionFactoryBean}에 등록할 수 있는 형태로 변경한 문자열
-     */
-    private String getTypeAliasesPackage(MyBatisItem item) {
-        StringBuilder sb = new StringBuilder();
-
-        for (int i = 0; i < item.getTypeAliasesPackages().size(); i++) {
-            sb.append(item.getTypeAliasesPackages().get(i));
-
-            if (i != item.getTypeAliasesPackages().size() - 1) {
-                sb.append(",");
-            }
-        }
-
-        return sb.toString();
     }
 }

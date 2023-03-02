@@ -46,17 +46,19 @@ project:
         maximum-pool-size: 5
         connection-timeout: 3
 
-  jta:
+  xa-datasource:
     enabled: true
     item-list:
-      - unique-resource-name: "conditioncoupon-xa"
-        xa-data-source-class-name: "org.mariadb.jdbc.MariaDbDataSource"
+      - enabled: true
+        unique-resource-name: "conditioncoupon-xa"
+        xa-datasource-class-name: "org.mariadb.jdbc.MariaDbDataSource"
         url: "jdbc:mariadb://10.90.1.220:3306/conditioncoupon_db?useSSL=false&allowMultiQueries=true"
         user: "conditioncoupon"
         password: "conditioncoupon!@34"
         pool-size: 3
-      - unique-resource-name: "lmmdev11-xa"
-        xa-data-source-class-name: "oracle.jdbc.xa.client.OracleXADataSource"
+      - enabled: true
+        unique-resource-name: "lmmdev11-xa"
+        xa-datasource-class-name: "oracle.jdbc.xa.client.OracleXADataSource"
         url: "jdbc:oracle:thin:@devdb11.lemonm.kr:1521:lmmdev11"
         user: "daelim"
         password: "daelimroqkf1"

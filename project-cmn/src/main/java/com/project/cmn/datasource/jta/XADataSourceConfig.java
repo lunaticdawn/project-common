@@ -13,9 +13,9 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-public class JtaConfig {
-    public static JtaConfig init(Environment env) {
-        return Binder.get(env).bindOrCreate("project.jta", JtaConfig.class);
+public class XADataSourceConfig {
+    public static XADataSourceConfig init(Environment env) {
+        return Binder.get(env).bindOrCreate("project.xa-datasource", XADataSourceConfig.class);
     }
 
     /**

@@ -16,17 +16,19 @@ import org.springframework.lang.NonNull;
 
 @Slf4j
 @AutoConfiguration
-@ConditionalOnProperty(prefix = "project.jta", value = "enabled", havingValue = "true")
+@ConditionalOnProperty(prefix = "project.xa-datasource", value = "enabled", havingValue = "true")
 public class RegistryXADataSource implements BeanDefinitionRegistryPostProcessor, EnvironmentAware {
-    private JtaConfig jtaConfig;
+    private XADataSourceConfig xaDataSourceConfig;
 
     @Override
     public void setEnvironment(@NonNull Environment environment) {
-        jtaConfig = JtaConfig.init(environment);
+        xaDataSourceConfig = XADataSourceConfig.init(environment);
     }
 
     @Override
     public void postProcessBeanDefinitionRegistry(@NonNull BeanDefinitionRegistry registry) throws BeansException {
+        log.info("# RegistryXADataSource");
+        // Atomikos 라이브러리가 자동으로 JTA를 구성해주기 때문에 Transaction에 대한 설정은 별도로 하지 않는다.
         this.registerXADataSource(registry);
     }
 
@@ -43,14 +45,18 @@ public class RegistryXADataSource implements BeanDefinitionRegistryPostProcessor
     private void registerXADataSource(BeanDefinitionRegistry registry) {
         AbstractBeanDefinition beanDefinition;
 
-        for (XADataSourceItem item : jtaConfig.getItemList()) {
+        for (XADataSourceItem item : xaDataSourceConfig.getItemList()) {
+            if (!item.isEnabled()) {
+                continue;
+            }
+
             beanDefinition = BeanDefinitionBuilder.genericBeanDefinition(AtomikosDataSourceBean.class)
                     .addPropertyValue("uniqueResourceName", item.getUniqueResourceName())
                     .addPropertyValue("xaDataSourceClassName", item.getXaDataSourceClassName())
                     .addPropertyValue("xaProperties", item.getProperties())
                     .getBeanDefinition();
 
-            log.debug("# AtomikosDataSourceBean Register {}", item.getUniqueResourceName());
+            log.info("# AtomikosDataSourceBean({}) Register.", item.getUniqueResourceName());
             registry.registerBeanDefinition(item.getUniqueResourceName(), beanDefinition);
         }
     }

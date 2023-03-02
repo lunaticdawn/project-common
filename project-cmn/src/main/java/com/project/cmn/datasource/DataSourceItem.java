@@ -24,7 +24,7 @@ public class DataSourceItem {
     private boolean enabled;
 
     /**
-     * Primary 선언 여부
+     * &#064;Primary 선언 여부
      */
     private boolean primary;
 
