@@ -2,6 +2,7 @@ package com.project.cmn.datasource;
 
 import com.project.cmn.datasource.jta.XADataSourceConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import io.micrometer.common.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
@@ -17,6 +18,11 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy;
 import org.springframework.lang.NonNull;
 
+/**
+ * project.datasource 에 설정되어 있는 DataSource 와 Transaction 을 등록한다.
+ * ComponentScan 으로 Service 나 Mapper 가 등록되기 전에 등록하기 위해 {@link BeanDefinitionRegistryPostProcessor} 인터페이스를 구현하고
+ * 설정들이 주입되기 전에 실행되기 때문에 설정을 가져오기 위한 {@link EnvironmentAware} 인터페이스를 구현한다.
+ */
 @Slf4j
 @AutoConfiguration
 @ConditionalOnProperty(prefix = "project.datasource", value = "enabled", havingValue = "true")
@@ -32,6 +38,7 @@ public class RegistryDataSource implements BeanDefinitionRegistryPostProcessor, 
 
     @Override
     public void postProcessBeanDefinitionRegistry(@NonNull BeanDefinitionRegistry registry) throws BeansException {
+        // project.xa-datasource.enabled 이 false 일 때만 등록을 한다.
         if (!xaDataSourceConfig.isEnabled()) {
             log.info("# RegistryDataSource");
 
@@ -84,7 +91,7 @@ public class RegistryDataSource implements BeanDefinitionRegistryPostProcessor, 
         AbstractBeanDefinition beanDefinition;
 
         for (DataSourceItem item : dataSourceConfig.getItemList()) {
-            if (!item.isEnabled()) {
+            if (!item.isEnabled() || StringUtils.isBlank(item.getTransactionName())) {
                 continue;
             }
 
