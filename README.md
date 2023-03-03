@@ -9,7 +9,7 @@ Springboot 프로젝트 생성 시 참조할 공통 모듈
         - 일반적인 방법.
         - @Configuration과 @Bean을 이용하여 DataSource, SqlSessionFactory, SqlSessionTemplate, DataSourceTransactionManager를 직접 생성
     - BeanDefinitionRegistryPostProcessor를 이용하여 Bean으로 등록하는 방법
-        - commit된 소스가 사용하는 방법.
+        - commit된 소스에서 사용하는 방법.
         - application.yml에서 다음 AutoConfiguration은 제외
             - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
             - org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration
