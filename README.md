@@ -14,15 +14,19 @@ Springboot 프로젝트 생성 시 참조할 공통 모듈
 4. SpringBoot 3.x(SpringFramework 6.x) 부터 Transaction 패키지가 javax에서 jakarta로 변경되었고 Atomikos는 아직 변경 전이다.
 따라서 Atomikos를 사용하려면 SpringBoot 2.x(SpringFramework 5.x)를 사용해야 한다.
 
-### DataSource 설정용 properties
-<pre>
-<code>
+### DataSource 생성을 위한 properties
+<pre><code>
 {
   "groups": [
     {
       "name": "project.datasource",
       "type": "com.project.cmn.datasource.DataSourceConfig",
       "sourceType": "com.project.cmn.datasource.DataSourceConfig"
+    },
+    {
+      "name": "project.datasource.item-list",
+      "type": "com.project.cmn.datasource.DataSourceItem",
+      "sourceType": "com.project.cmn.datasource.DataSourceItem"
     }
   ],
   "properties": [
@@ -154,5 +158,178 @@ Springboot 프로젝트 생성 시 참조할 공통 모듈
   ],
   "hints": []
 }
-</code>
-</pre>
+</code></pre>
+
+### XADataSource 생성을 위한 properties
+<pre><code>
+{
+  "groups": [
+    {
+      "name": "project.xa-datasource",
+      "type": "com.project.cmn.datasource.jta.XADataSourceConfig",
+      "sourceType": "com.project.cmn.datasource.jta.XADataSourceConfig"
+    },
+    {
+      "name": "project.xa-datasource.item-list",
+      "type": "com.project.cmn.datasource.jta.XADataSourceItem",
+      "sourceType": "com.project.cmn.datasource.jta.XADataSourceItem"
+    }
+  ],
+  "properties": [
+    {
+      "name": "project.xa-datasource.enabled",
+      "type": "java.lang.Boolean",
+      "description": "project.xa-datasource 설정 사용여부 #project.xa-datasource.enabled",
+      "sourceType": "com.project.cmn.datasource.jta.XADataSourceConfig",
+      "defaultValue": false
+    },
+    {
+      "name": "project.xa-datasource.item-list",
+      "type": "java.util.List<com.project.cmn.datasource.jta.XADataSourceItem>",
+      "description": "여러 개의 {@link javax.sql.XADataSource} 생성에 필요한 설정들 #project.xa-datasource.item-list",
+      "sourceType": "com.project.cmn.datasource.jta.XADataSourceConfig"
+    },
+    {
+      "name": "project.xa-datasource.item-list.enabled",
+      "type": "java.lang.Boolean",
+      "description": "데이터소스 사용여부 #project.xa-datasource.item-list.enabled",
+      "sourceType": "com.project.cmn.datasource.jta.XADataSourceItem",
+      "defaultValue": false
+    },
+    {
+      "name": "project.xa-datasource.item-list.password",
+      "type": "java.lang.String",
+      "description": "DB 비밀번호 #project.xa-datasource.item-list.password",
+      "sourceType": "com.project.cmn.datasource.jta.XADataSourceItem"
+    },
+    {
+      "name": "project.xa-datasource.item-list.pool-size",
+      "type": "java.lang.Integer",
+      "description": "Pool 사이즈 #project.xa-datasource.item-list.pool-size",
+      "sourceType": "com.project.cmn.datasource.jta.XADataSourceItem",
+      "defaultValue": 0
+    },
+    {
+      "name": "project.xa-datasource.item-list.properties",
+      "type": "java.util.Properties",
+      "sourceType": "com.project.cmn.datasource.jta.XADataSourceItem"
+    },
+    {
+      "name": "project.xa-datasource.item-list.unique-resource-name",
+      "type": "java.lang.String",
+      "description": "리소스 이름 #project.xa-datasource.item-list.unique-resource-name",
+      "sourceType": "com.project.cmn.datasource.jta.XADataSourceItem"
+    },
+    {
+      "name": "project.xa-datasource.item-list.url",
+      "type": "java.lang.String",
+      "description": "DB의 URL #project.xa-datasource.item-list.url",
+      "sourceType": "com.project.cmn.datasource.jta.XADataSourceItem"
+    },
+    {
+      "name": "project.xa-datasource.item-list.user",
+      "type": "java.lang.String",
+      "description": "DB 사용자 이름 #project.xa-datasource.item-list.user",
+      "sourceType": "com.project.cmn.datasource.jta.XADataSourceItem"
+    },
+    {
+      "name": "project.xa-datasource.item-list.xa-data-source-class-name",
+      "type": "java.lang.String",
+      "description": "DBMS별 XADataSource 클래스 명 #project.xa-datasource.item-list.xa-data-source-class-name",
+      "sourceType": "com.project.cmn.datasource.jta.XADataSourceItem"
+    }
+  ],
+  "hints": []
+}
+</code></pre>
+
+### SqlSessionTemplate과 MapperScannerConfigurer 생성을 위한 Properties
+<pre><code>
+{
+  "groups": [
+    {
+      "name": "project.mybatis",
+      "type": "com.project.cmn.mybatis.MyBatisConfig",
+      "sourceType": "com.project.cmn.mybatis.MyBatisConfig"
+    },
+    {
+      "name": "project.mybatis.item-list",
+      "type": "com.project.cmn.mybatis.MyBatisItem",
+      "sourceType": "com.project.cmn.mybatis.MyBatisItem"
+    }
+  ],
+  "properties": [
+    {
+      "name": "project.mybatis.enabled",
+      "type": "java.lang.Boolean",
+      "description": "project.mybatis 설정 사용여부 #project.mybatis.enabled",
+      "sourceType": "com.project.cmn.mybatis.MyBatisConfig",
+      "defaultValue": false
+    },
+    {
+      "name": "project.mybatis.item-list",
+      "type": "java.util.List<com.project.cmn.mybatis.MyBatisItem>",
+      "description": "여러 개의 {@link org.mybatis.spring.SqlSessionTemplate}과 {@link org.mybatis.spring.mapper.MapperScannerConfigurer} 생성에 필요한 설정들 #project.mybatis.item-list",
+      "sourceType": "com.project.cmn.mybatis.MyBatisConfig"
+    },
+    {
+      "name": "project.mybatis.item-list.annotation-class-name",
+      "type": "java.lang.String",
+      "description": "Mapper 로 등록할 Annotation Class 이름. {@link org.mybatis.spring.mapper.MapperScannerConfigurer}의 annotationClass #project.mybatis.item-list.annotation-class-name",
+      "sourceType": "com.project.cmn.mybatis.MyBatisItem",
+      "defaultValue": "org.apache.ibatis.annotations.Mapper"
+    },
+    {
+      "name": "project.mybatis.item-list.config-location",
+      "type": "java.lang.String",
+      "description": "MyBatis 설정 파일 위치. {@link org.mybatis.spring.SqlSessionFactoryBean}의 configLocation #project.mybatis.item-list.config-location",
+      "sourceType": "com.project.cmn.mybatis.MyBatisItem"
+    },
+    {
+      "name": "project.mybatis.item-list.datasource-name",
+      "type": "java.lang.String",
+      "description": "사용할 DataSource 명. {@link org.mybatis.spring.SqlSessionFactoryBean}의 dataSource #project.mybatis.item-list.datasource-name",
+      "sourceType": "com.project.cmn.mybatis.MyBatisItem"
+    },
+    {
+      "name": "project.mybatis.item-list.enabled",
+      "type": "java.lang.Boolean",
+      "description": "설정 사용 여부 #project.mybatis.item-list.enabled",
+      "sourceType": "com.project.cmn.mybatis.MyBatisItem",
+      "defaultValue": false
+    },
+    {
+      "name": "project.mybatis.item-list.mapper-base-package",
+      "type": "java.lang.String",
+      "description": "Mapper 클래스의 패키지 경로. {@link org.mybatis.spring.mapper.MapperScannerConfigurer}의 basePackage #project.mybatis.item-list.mapper-base-package",
+      "sourceType": "com.project.cmn.mybatis.MyBatisItem"
+    },
+    {
+      "name": "project.mybatis.item-list.mapper-locations",
+      "type": "java.util.List<java.lang.String>",
+      "description": "쿼리 XML 파일의 위치들. {@link org.mybatis.spring.SqlSessionFactoryBean}의 mapperLocations #project.mybatis.item-list.mapper-locations",
+      "sourceType": "com.project.cmn.mybatis.MyBatisItem"
+    },
+    {
+      "name": "project.mybatis.item-list.primary",
+      "type": "java.lang.Boolean",
+      "description": "&#064;Primary  선언 여부 #project.mybatis.item-list.primary",
+      "sourceType": "com.project.cmn.mybatis.MyBatisItem",
+      "defaultValue": false
+    },
+    {
+      "name": "project.mybatis.item-list.sql-session-template-name",
+      "type": "java.lang.String",
+      "description": "{@link org.mybatis.spring.SqlSessionTemplate}의 이름 #project.mybatis.item-list.sql-session-template-name",
+      "sourceType": "com.project.cmn.mybatis.MyBatisItem"
+    },
+    {
+      "name": "project.mybatis.item-list.type-aliases-packages",
+      "type": "java.util.List<java.lang.String>",
+      "description": "ParameterType, ResultType 으로 사용할 클래스들이 있는 패키지들. {@link org.mybatis.spring.SqlSessionFactoryBean}의 typeAliasesPackage #project.mybatis.item-list.typeAliasesPackages",
+      "sourceType": "com.project.cmn.mybatis.MyBatisItem"
+    }
+  ],
+  "hints": []
+}
+</code></pre>
