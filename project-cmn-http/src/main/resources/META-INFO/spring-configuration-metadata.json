@@ -1,0 +1,86 @@
+{
+  "groups": [
+    {
+      "name": "project.access.log",
+      "type": "com.project.cmn.http.accesslog.AccessLogConfig",
+      "sourceType": "com.project.cmn.http.accesslog.AccessLogConfig"
+    }
+  ],
+  "properties": [
+    {
+      "name": "project.access.log.enabled",
+      "type": "java.lang.Boolean",
+      "description": "Access Log 사용 여부",
+      "sourceType": "com.project.cmn.http.accesslog.AccessLogConfig",
+      "defaultValue": false
+    },
+    {
+      "name": "project.access.log.exclude-path-patterns",
+      "type": "java.util.List<java.lang.String>",
+      "description": "로깅하지 않을 Path Pattern 들",
+      "sourceType": "com.project.cmn.http.accesslog.AccessLogConfig"
+    },
+    {
+      "name": "project.access.log.request-body",
+      "type": "java.lang.Boolean",
+      "description": "Request Body의 로깅 여부. default: false",
+      "sourceType": "com.project.cmn.http.accesslog.AccessLogConfig",
+      "defaultValue": false
+    },
+    {
+      "name": "project.access.log.request-body-length",
+      "type": "java.lang.Integer",
+      "description": "로깅할 Request Body의 길이. default: 0 - 전체를 로깅",
+      "sourceType": "com.project.cmn.http.accesslog.AccessLogConfig",
+      "defaultValue": 0
+    },
+    {
+      "name": "project.access.log.request-header",
+      "type": "java.lang.Boolean",
+      "description": "Request Header의 로깅 여부. default: false",
+      "sourceType": "com.project.cmn.http.accesslog.AccessLogConfig",
+      "defaultValue": false
+    },
+    {
+      "name": "project.access.log.request-header-names",
+      "type": "java.util.List<java.lang.String>",
+      "description": "로깅할 Request Header들. default: 전체 로깅",
+      "sourceType": "com.project.cmn.http.accesslog.AccessLogConfig"
+    },
+    {
+      "name": "project.access.log.request-param",
+      "type": "java.lang.Boolean",
+      "description": "Request Parameter의 로깅 여부. default: false",
+      "sourceType": "com.project.cmn.http.accesslog.AccessLogConfig",
+      "defaultValue": false
+    },
+    {
+      "name": "project.access.log.response-body",
+      "type": "java.lang.Boolean",
+      "description": "Response Body의 로깅 여부. default: false",
+      "sourceType": "com.project.cmn.http.accesslog.AccessLogConfig",
+      "defaultValue": false
+    },
+    {
+      "name": "project.access.log.response-body-length",
+      "type": "java.lang.Integer",
+      "description": "로깅할 Response Body의 길이. default: 0 - 전체를 로깅",
+      "sourceType": "com.project.cmn.http.accesslog.AccessLogConfig",
+      "defaultValue": 0
+    },
+    {
+      "name": "project.access.log.response-header",
+      "type": "java.lang.Boolean",
+      "description": "Response Header의 로깅 여부. default: false",
+      "sourceType": "com.project.cmn.http.accesslog.AccessLogConfig",
+      "defaultValue": false
+    },
+    {
+      "name": "project.access.log.response-header-names",
+      "type": "java.util.List<java.lang.String>",
+      "description": "로깅할 Response Header들. default: 전체 로깅",
+      "sourceType": "com.project.cmn.http.accesslog.AccessLogConfig"
+    }
+  ],
+  "hints": []
+}
