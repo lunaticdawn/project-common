@@ -22,8 +22,8 @@ import java.io.IOException;
 @Slf4j
 @RequiredArgsConstructor
 public class AccessLogInterceptor implements HandlerInterceptor {
-    private final AccessLog accessLog;
     private final AccessLogConfig accessLogConfig;
+    private final AccessLog accessLog;
 
     @Override
     public boolean preHandle(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull Object handler) {

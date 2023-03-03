@@ -2,6 +2,7 @@ package com.project.cmn.http.accesslog;
 
 import com.project.cmn.http.WebCmnConstants;
 import com.project.cmn.util.HostInfoUtils;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -27,6 +28,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @RequiredArgsConstructor
 public class AccessLog {
+    @Getter
     private final AccessLogConfig accessLogConfig;
 
     private static final ThreadLocalAccessLog threadLocalAccessLog = new ThreadLocalAccessLog();

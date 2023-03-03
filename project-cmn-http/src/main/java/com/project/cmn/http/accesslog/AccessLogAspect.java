@@ -5,12 +5,16 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.util.StopWatch;
 
 /**
  * URL 호출 시 거치는 메소드에 대한 정보를 남기기 위한 AOP
  */
 @Aspect
+@Configuration
+@ConditionalOnProperty(prefix = "project.access.log", value = "enabled", havingValue = "true")
 public class AccessLogAspect {
 
     @Around(value = "execution(* com.project..*Controller.*(..)) || execution(* com.project..*Service.*(..)) || execution(* com.project..*ServiceImpl.*(..)) || execution(* com.project..*Mapper.*(..))")
