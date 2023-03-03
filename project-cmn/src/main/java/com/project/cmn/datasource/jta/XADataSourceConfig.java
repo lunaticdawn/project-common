@@ -3,28 +3,38 @@ package com.project.cmn.datasource.jta;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.core.env.Environment;
 
 import java.util.List;
 
-@Slf4j
+/**
+ * XADataSource 설정
+ * #project.xa-datasource
+ */
 @Getter
 @Setter
 @ToString
 public class XADataSourceConfig {
-    public static XADataSourceConfig init(Environment env) {
-        return Binder.get(env).bindOrCreate("project.xa-datasource", XADataSourceConfig.class);
+    /**
+     * {@link Environment}에서 project.xa-datasource 설정을 가져와 {@link XADataSourceConfig}로 변환한다.
+     *
+     * @param environment {@link Environment}
+     * @return {@link XADataSourceConfig}
+     */
+    public static XADataSourceConfig init(Environment environment) {
+        return Binder.get(environment).bindOrCreate("project.xa-datasource", XADataSourceConfig.class);
     }
 
     /**
-     * JTA 사용여부
+     * project.xa-datasource 설정 사용여부
+     * #project.xa-datasource.enabled
      */
     private boolean enabled;
 
     /**
-     * XA 데이터소스 설정
+     * {@link javax.sql.XADataSource}를 위한 설정들
+     * #project.xa-datasource.item-list
      */
     private List<XADataSourceItem> itemList;
 }

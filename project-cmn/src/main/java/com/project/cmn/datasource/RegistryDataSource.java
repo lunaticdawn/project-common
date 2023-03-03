@@ -68,12 +68,10 @@ public class RegistryDataSource implements BeanDefinitionRegistryPostProcessor, 
             if (item.isLazyConnection()) {
                 beanDefinition = BeanDefinitionBuilder.genericBeanDefinition(LazyConnectionDataSourceProxy.class)
                         .addConstructorArgValue(new HikariDataSource(item.getHikariConfig()))
-                        .setPrimary(item.isPrimary())
                         .getBeanDefinition();
             } else {
                 beanDefinition = BeanDefinitionBuilder.genericBeanDefinition(HikariDataSource.class)
                         .addPropertyValue("dataSource", new HikariDataSource(item.getHikariConfig()))
-                        .setPrimary(item.isPrimary())
                         .getBeanDefinition();
             }
 
@@ -97,8 +95,11 @@ public class RegistryDataSource implements BeanDefinitionRegistryPostProcessor, 
 
             beanDefinition = BeanDefinitionBuilder.genericBeanDefinition(DataSourceTransactionManager.class)
                     .addConstructorArgReference(item.getDatasourceName())
-                    .setPrimary(item.isPrimary())
                     .getBeanDefinition();
+
+            if (item.isPrimary()) {
+                beanDefinition.setPrimary(true);
+            }
 
             log.info("# Transaction({}) Register.", item.getTransactionName());
             registry.registerBeanDefinition(item.getTransactionName(), beanDefinition);

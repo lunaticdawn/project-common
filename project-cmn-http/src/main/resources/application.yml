@@ -5,6 +5,7 @@ spring:
   autoconfigure:
     exclude:
       - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration
       - org.springframework.boot.autoconfigure.jdbc.XADataSourceAutoConfiguration
   jta:
     enabled: false
@@ -35,7 +36,7 @@ project:
         url: "jdbc:log4jdbc:mariadb://10.90.1.220:3306/conditioncoupon_db?useSSL=false&allowMultiQueries=true"
         user: "conditioncoupon"
         password: "conditioncoupon!@34"
-        maximum-pool-size: 5
+        maximum-pool-size: 3
         connection-timeout: 3
       - enabled: true
         lazy-connection: true
@@ -45,7 +46,7 @@ project:
         url: "jdbc:log4jdbc:oracle:thin:@devdb11.lemonm.kr:1521:lmmdev11"
         user: "daelim"
         password: "daelimroqkf1"
-        maximum-pool-size: 5
+        maximum-pool-size: 3
         connection-timeout: 3
 
   xa-datasource:
@@ -78,7 +79,7 @@ project:
           - "classpath*:mapper/**/*.xml"
         type-aliases-packages:
           - "com.project.cmn.http.persistence.model"
-        mapper-package: "com.project.cmn.http.persistence.mapper.conditioncoupon"
+        mapper-base-package: "com.project.cmn.http.persistence.mapper.conditioncoupon"
       - enabled: true
         datasource-name: "lmmdev11-ds"
         sql-session-template-name: "lmmdev11-templ"
@@ -87,4 +88,4 @@ project:
           - "classpath*:mapper/**/*.xml"
         type-aliases-packages:
           - "com.project.cmn.http.persistence.model"
-        mapper-package: "com.project.cmn.http.persistence.mapper.lmmdev11"
+        mapper-base-package: "com.project.cmn.http.persistence.mapper.lmmdev11"
