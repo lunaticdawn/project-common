@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.util.Properties;
 
@@ -15,7 +14,6 @@ import java.util.Properties;
 @Getter
 @Setter
 @ToString
-@ConfigurationProperties(prefix = "project.xa-datasource.item-list")
 public class XADataSourceItem {
     /**
      * 데이터소스 사용여부
