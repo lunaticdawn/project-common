@@ -8,7 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.Properties;
 
 /**
- * {@link javax.sql.XADataSource}를 위한 설정들
+ * {@link javax.sql.XADataSource} 생성에 필요한 설정
  * #project.xa-datasource.item-list
  */
 @Getter
@@ -29,7 +29,7 @@ public class XADataSourceItem {
 
     /**
      * DBMS별 XADataSource 클래스 명
-     * #project.xa-datasource.item-list.xa-datasource-class-name
+     * #project.xa-datasource.item-list.xa-data-source-class-name
      */
     private String xaDataSourceClassName;
 

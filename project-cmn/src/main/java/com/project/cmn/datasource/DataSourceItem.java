@@ -12,7 +12,7 @@ import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
 /**
- * {@link com.zaxxer.hikari.HikariDataSource}를 위한 설정들
+ * {@link com.zaxxer.hikari.HikariDataSource} 생성에 필요한 설정
  * #project.datasource.item-list
  */
 @Getter

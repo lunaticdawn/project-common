@@ -3,18 +3,20 @@ package com.project.cmn.mybatis;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.core.env.Environment;
 
 import java.util.List;
 
 /**
- * MyBatis 설정들
+ * MyBatis 설정
  * #project.mybatis
  */
 @Getter
 @Setter
 @ToString
+@ConfigurationProperties(prefix = "project.mybatis")
 public class MyBatisConfig {
     /**
      * {@link Environment}에서 project.mybatis 설정을 가져와 {@link MyBatisConfig}로 변환한다.
@@ -28,12 +30,12 @@ public class MyBatisConfig {
 
     /**
      * project.mybatis 설정 사용여부
-     * #project.mybatis.enable
+     * #project.mybatis.enabled
      */
-    private boolean enable;
+    private boolean enabled;
 
     /**
-     * {@link org.mybatis.spring.SqlSessionTemplate}과 {@link org.mybatis.spring.mapper.MapperScannerConfigurer}를 위한 설정들
+     * 여러 개의 {@link org.mybatis.spring.SqlSessionTemplate}과 {@link org.mybatis.spring.mapper.MapperScannerConfigurer} 생성에 필요한 설정들
      * #project.mybatis.item-list
      */
     private List<MyBatisItem> itemList;

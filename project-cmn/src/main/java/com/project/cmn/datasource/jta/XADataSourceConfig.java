@@ -3,6 +3,7 @@ package com.project.cmn.datasource.jta;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.core.env.Environment;
 
@@ -15,6 +16,7 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
+@ConfigurationProperties(prefix = "project.xa-datasource")
 public class XADataSourceConfig {
     /**
      * {@link Environment}에서 project.xa-datasource 설정을 가져와 {@link XADataSourceConfig}로 변환한다.
@@ -33,7 +35,7 @@ public class XADataSourceConfig {
     private boolean enabled;
 
     /**
-     * {@link javax.sql.XADataSource}를 위한 설정들
+     * 여러 개의 {@link javax.sql.XADataSource} 생성에 필요한 설정들
      * #project.xa-datasource.item-list
      */
     private List<XADataSourceItem> itemList;

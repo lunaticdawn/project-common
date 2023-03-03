@@ -13,57 +13,57 @@
     </logger>
 
     <!-- 3rdparty Loggers -->
-    <logger name="org.springframework" level="DEBUG" additivity="false">
-        <appender-ref ref="CONSOLE"/>
-    </logger>
-    <logger name="org.hibernate" level="INFO" additivity="false">
-        <appender-ref ref="CONSOLE"/>
-    </logger>
-    <logger name="org.jboss.logging" level="INFO" additivity="false">
-        <appender-ref ref="CONSOLE"/>
-    </logger>
-    <logger name="org.apache.commons" level="INFO" additivity="false">
-        <appender-ref ref="CONSOLE"/>
-    </logger>
-    <logger name="org.apache.tiles" level="INFO" additivity="false">
-        <appender-ref ref="CONSOLE"/>
-    </logger>
-    <logger name="org.thymeleaf" level="INFO" additivity="false">
-        <appender-ref ref="CONSOLE"/>
-    </logger>
+    <!--    <logger name="org.springframework" level="DEBUG" additivity="false">
+            <appender-ref ref="CONSOLE"/>
+        </logger>
+        <logger name="org.hibernate" level="INFO" additivity="false">
+            <appender-ref ref="CONSOLE"/>
+        </logger>
+        <logger name="org.jboss.logging" level="INFO" additivity="false">
+            <appender-ref ref="CONSOLE"/>
+        </logger>
+        <logger name="org.apache.commons" level="INFO" additivity="false">
+            <appender-ref ref="CONSOLE"/>
+        </logger>
+        <logger name="org.apache.tiles" level="INFO" additivity="false">
+            <appender-ref ref="CONSOLE"/>
+        </logger>
+        <logger name="org.thymeleaf" level="INFO" additivity="false">
+            <appender-ref ref="CONSOLE"/>
+        </logger>-->
 
     <!-- JDBC Loggers -->
-    <logger name="com.zaxxer.hikari" level="DEBUG" additivity="false">
-        <appender-ref ref="CONSOLE"/>
-    </logger>
-    <logger name="log4jdbc" level="DEBUG" additivity="false">
-        <appender-ref ref="CONSOLE"/>
-    </logger>
-    <logger name="org.mybatis" level="DEBUG" additivity="false">
-        <appender-ref ref="CONSOLE"/>
-    </logger>
-    <logger name="org.apache.ibatis" level="DEBUG" additivity="false">
-        <appender-ref ref="CONSOLE"/>
-    </logger>
-    <logger name="org.mariadb" level="INFO" additivity="false">
-        <appender-ref ref="CONSOLE"/>
-    </logger>
+    <!--    <logger name="com.zaxxer.hikari" level="DEBUG" additivity="false">
+            <appender-ref ref="CONSOLE"/>
+        </logger>
+        <logger name="log4jdbc" level="INFO" additivity="false">
+            <appender-ref ref="CONSOLE"/>
+        </logger>
+        <logger name="org.mybatis" level="INFO" additivity="false">
+            <appender-ref ref="CONSOLE"/>
+        </logger>
+        <logger name="org.apache.ibatis" level="INFO" additivity="false">
+            <appender-ref ref="CONSOLE"/>
+        </logger>
+        <logger name="org.mariadb" level="INFO" additivity="false">
+            <appender-ref ref="CONSOLE"/>
+        </logger>
 
-    <logger name="jdbc.connection" level="INFO" additivity="false">
-        <appender-ref ref="CONSOLE"/>
-    </logger>
-    <logger name="jdbc.audit" level="WARN" additivity="false">
-        <appender-ref ref="CONSOLE"/>
-    </logger>
-    <logger name="jdbc.sqltiming" level="WARN" additivity="false">
-        <appender-ref ref="CONSOLE"/>
-    </logger>
-    <logger name="jdbc.resultset" level="WARN" additivity="false">
-        <appender-ref ref="CONSOLE"/>
-    </logger>
-    <logger name="com.navercorp.lucy.security.xss" level="INFO" additivity="false">
-        <appender-ref ref="CONSOLE"/>
-    </logger>
+        <logger name="jdbc.connection" level="INFO" additivity="false">
+            <appender-ref ref="CONSOLE"/>
+        </logger>
+        <logger name="jdbc.audit" level="WARN" additivity="false">
+            <appender-ref ref="CONSOLE"/>
+        </logger>
+        <logger name="jdbc.sqltiming" level="WARN" additivity="false">
+            <appender-ref ref="CONSOLE"/>
+        </logger>
+        <logger name="jdbc.resultset" level="WARN" additivity="false">
+            <appender-ref ref="CONSOLE"/>
+        </logger>
+        <logger name="com.navercorp.lucy.security.xss" level="INFO" additivity="false">
+            <appender-ref ref="CONSOLE"/>
+        </logger>-->
 
     <root level="DEBUG">
         <appender-ref ref="CONSOLE"/>
