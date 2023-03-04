@@ -3,6 +3,7 @@ package com.project.cmn.mybatis;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.util.List;
 
@@ -13,6 +14,7 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
+@ConfigurationProperties(prefix = "project.mybatis.item-list")
 public class MyBatisItem {
     /**
      * 설정 사용 여부

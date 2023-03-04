@@ -1,6 +1,5 @@
 package com.project.cmn.datasource;
 
-import com.project.cmn.datasource.jta.XADataSourceConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -25,26 +24,21 @@ import org.springframework.lang.NonNull;
  */
 @Slf4j
 @AutoConfiguration
-@ConditionalOnProperty(prefix = "project.datasource", value = "enabled", havingValue = "true")
+@ConditionalOnProperty(prefix = "spring.jta", value = "enabled", havingValue = "false", matchIfMissing = true)
 public class RegistryDataSource implements BeanDefinitionRegistryPostProcessor, EnvironmentAware {
     private DataSourceConfig dataSourceConfig;
-    private XADataSourceConfig xaDataSourceConfig;
 
     @Override
     public void setEnvironment(@NonNull Environment environment) {
         this.dataSourceConfig = DataSourceConfig.init(environment);
-        this.xaDataSourceConfig = XADataSourceConfig.init(environment);
     }
 
     @Override
     public void postProcessBeanDefinitionRegistry(@NonNull BeanDefinitionRegistry registry) throws BeansException {
-        // project.xa-datasource.enabled 이 false 일 때만 등록을 한다.
-        if (!xaDataSourceConfig.isEnabled()) {
-            log.info("# RegistryDataSource");
+        log.info("# RegistryDataSource");
 
-            this.registerDataSource(registry);
-            this.registerTransactionManager(registry);
-        }
+        this.registerDataSource(registry);
+        this.registerTransactionManager(registry);
     }
 
     @Override

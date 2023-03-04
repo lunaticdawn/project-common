@@ -7,6 +7,7 @@ spring:
       - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
       - org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration
       - org.springframework.boot.autoconfigure.jdbc.XADataSourceAutoConfiguration
+
   jta:
     enabled: false
 
@@ -25,7 +26,6 @@ project:
     exclude-path-patterns:
 
   datasource:
-    enabled: true
     item-list:
       - enabled: true
         primary: true
@@ -38,7 +38,7 @@ project:
         password: "conditioncoupon!@34"
         maximum-pool-size: 3
         connection-timeout: 3
-      - enabled: true
+      - enabled: false
         lazy-connection: true
         datasource-name: "lmmdev11-ds"
         transaction-name: "lmmdev11-tm"
@@ -49,23 +49,29 @@ project:
         maximum-pool-size: 3
         connection-timeout: 3
 
-  xa-datasource:
-    enabled: false
-    item-list:
-      - enabled: true
-        unique-resource-name: "conditioncoupon-xa"
-        xa-data-source-class-name: "org.mariadb.jdbc.MariaDbDataSource"
-        url: "jdbc:mariadb://10.90.1.220:3306/conditioncoupon_db?useSSL=false&allowMultiQueries=true"
-        user: "conditioncoupon"
-        password: "conditioncoupon!@34"
-        pool-size: 3
-      - enabled: true
-        unique-resource-name: "lmmdev11-xa"
-        xa-data-source-class-name: "oracle.jdbc.xa.client.OracleXADataSource"
-        url: "jdbc:oracle:thin:@devdb11.lemonm.kr:1521:lmmdev11"
-        user: "daelim"
-        password: "daelimroqkf1"
-        pool-size: 3
+#  datasource:
+#    item-list:
+#      - enabled: true
+#        primary: true
+#        lazy-connection: true
+#        datasource-name: "conditioncoupon-ds"
+#        transaction-name: "conditioncoupon-tm"
+#        driver-class-name: "org.mariadb.jdbc.MariaDbDataSource"
+#        url: "jdbc:mariadb://10.90.1.220:3306/conditioncoupon_db?useSSL=false&allowMultiQueries=true"
+#        user: "conditioncoupon"
+#        password: "conditioncoupon!@34"
+#        maximum-pool-size: 3
+#        connection-timeout: 3
+#      - enabled: false
+#        lazy-connection: true
+#        datasource-name: "lmmdev11-ds"
+#        transaction-name: "lmmdev11-tm"
+#        driver-class-name: "oracle.jdbc.xa.client.OracleXADataSource"
+#        url: "jdbc:oracle:thin:@devdb11.lemonm.kr:1521:lmmdev11"
+#        user: "daelim"
+#        password: "daelimroqkf1"
+#        maximum-pool-size: 3
+#        connection-timeout: 3
 
   mybatis:
     enabled: true
@@ -80,7 +86,7 @@ project:
         type-aliases-packages:
           - "com.project.cmn.http.persistence.model"
         mapper-base-package: "com.project.cmn.http.persistence.mapper.conditioncoupon"
-      - enabled: true
+      - enabled: false
         datasource-name: "lmmdev11-ds"
         sql-session-template-name: "lmmdev11-templ"
         config-location: "classpath:mybatis/mybatis-config.xml"

@@ -1,8 +1,10 @@
-package com.project.cmn.datasource.jta;
+package com.project.cmn.datasource;
 
 import com.atomikos.jdbc.AtomikosDataSourceBean;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.MutablePropertyValues;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
@@ -21,13 +23,13 @@ import org.springframework.lang.NonNull;
  */
 @Slf4j
 @AutoConfiguration
-@ConditionalOnProperty(prefix = "project.xa-datasource", value = "enabled", havingValue = "true")
+@ConditionalOnProperty(prefix = "spring.jta", value = "enabled", havingValue = "true")
 public class RegistryXADataSource implements BeanDefinitionRegistryPostProcessor, EnvironmentAware {
-    private XADataSourceConfig xaDataSourceConfig;
+    private DataSourceConfig dataSourceConfig;
 
     @Override
     public void setEnvironment(@NonNull Environment environment) {
-        xaDataSourceConfig = XADataSourceConfig.init(environment);
+        dataSourceConfig = DataSourceConfig.init(environment);
     }
 
     @Override
@@ -50,19 +52,36 @@ public class RegistryXADataSource implements BeanDefinitionRegistryPostProcessor
     private void registerXADataSource(BeanDefinitionRegistry registry) {
         AbstractBeanDefinition beanDefinition;
 
-        for (XADataSourceItem item : xaDataSourceConfig.getItemList()) {
+        for (DataSourceItem item : dataSourceConfig.getItemList()) {
             if (!item.isEnabled()) {
                 continue;
             }
 
+            MutablePropertyValues propertyValues = new MutablePropertyValues();
+
+            propertyValues.addPropertyValue("uniqueResourceName", item.getDatasourceName());
+            propertyValues.addPropertyValue("xaDataSourceClassName", item.getDriverClassName());
+            propertyValues.addPropertyValue("xaProperties", item.getPropertiesForXADataSource());
+
+            if (item.getMaximumPoolSize() != 0) {
+                propertyValues.addPropertyValue("maxPoolSize", item.getMaximumPoolSize());
+            }
+
+            if (item.getConnectionTimeout() != 0) {
+                propertyValues.addPropertyValue("borrowConnectionTimeout", item.getConnectionTimeout());
+            }
+
+            if (StringUtils.isNotBlank(item.getConnectionTestQuery())) {
+                propertyValues.addPropertyValue("testQuery", item.getConnectionTestQuery());
+            }
+
             beanDefinition = BeanDefinitionBuilder.genericBeanDefinition(AtomikosDataSourceBean.class)
-                    .addPropertyValue("uniqueResourceName", item.getUniqueResourceName())
-                    .addPropertyValue("xaDataSourceClassName", item.getXaDataSourceClassName())
-                    .addPropertyValue("xaProperties", item.getProperties())
                     .getBeanDefinition();
 
-            log.info("# AtomikosDataSourceBean({}) Register.", item.getUniqueResourceName());
-            registry.registerBeanDefinition(item.getUniqueResourceName(), beanDefinition);
+            beanDefinition.setPropertyValues(propertyValues);
+
+            log.info("# AtomikosDataSourceBean({}) Register.", item.getDatasourceName());
+            registry.registerBeanDefinition(item.getDatasourceName(), beanDefinition);
         }
     }
 }

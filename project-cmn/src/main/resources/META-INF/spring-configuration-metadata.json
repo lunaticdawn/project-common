@@ -19,30 +19,13 @@
       "name": "project.mybatis.item-list",
       "type": "com.project.cmn.mybatis.MyBatisItem",
       "sourceType": "com.project.cmn.mybatis.MyBatisItem"
-    },
-    {
-      "name": "project.xa-datasource",
-      "type": "com.project.cmn.datasource.jta.XADataSourceConfig",
-      "sourceType": "com.project.cmn.datasource.jta.XADataSourceConfig"
-    },
-    {
-      "name": "project.xa-datasource.item-list",
-      "type": "com.project.cmn.datasource.jta.XADataSourceItem",
-      "sourceType": "com.project.cmn.datasource.jta.XADataSourceItem"
     }
   ],
   "properties": [
     {
-      "name": "project.datasource.enabled",
-      "type": "java.lang.Boolean",
-      "description": "project.datasource 설정 사용여부 #project.datasource.enabled",
-      "sourceType": "com.project.cmn.datasource.DataSourceConfig",
-      "defaultValue": false
-    },
-    {
       "name": "project.datasource.item-list",
       "type": "java.util.List<com.project.cmn.datasource.DataSourceItem>",
-      "description": "여러 개의 {@link com.zaxxer.hikari.HikariDataSource} 생성에 필요한 설정들 #project.datasource.item-list",
+      "description": "여러 개의 {@link com.zaxxer.hikari.HikariDataSource} 또는 {@link javax.sql.XADataSource} 생성에 필요한 설정 #project.datasource.item-list",
       "sourceType": "com.project.cmn.datasource.DataSourceConfig"
     },
     {
@@ -140,6 +123,11 @@
       "defaultValue": false
     },
     {
+      "name": "project.datasource.item-list.properties-for-x-a-data-source",
+      "type": "java.util.Properties",
+      "sourceType": "com.project.cmn.datasource.DataSourceItem"
+    },
+    {
       "name": "project.datasource.item-list.transaction-name",
       "type": "java.lang.String",
       "description": "Transaction 이름. 옵션. 없으면 생성안함 #project.datasource.item-list.transaction-name",
@@ -226,68 +214,6 @@
       "type": "java.util.List<java.lang.String>",
       "description": "ParameterType, ResultType 으로 사용할 클래스들이 있는 패키지들. {@link org.mybatis.spring.SqlSessionFactoryBean}의 typeAliasesPackage #project.mybatis.item-list.typeAliasesPackages",
       "sourceType": "com.project.cmn.mybatis.MyBatisItem"
-    },
-    {
-      "name": "project.xa-datasource.enabled",
-      "type": "java.lang.Boolean",
-      "description": "project.xa-datasource 설정 사용여부 #project.xa-datasource.enabled",
-      "sourceType": "com.project.cmn.datasource.jta.XADataSourceConfig",
-      "defaultValue": false
-    },
-    {
-      "name": "project.xa-datasource.item-list",
-      "type": "java.util.List<com.project.cmn.datasource.jta.XADataSourceItem>",
-      "description": "여러 개의 {@link javax.sql.XADataSource} 생성에 필요한 설정들 #project.xa-datasource.item-list",
-      "sourceType": "com.project.cmn.datasource.jta.XADataSourceConfig"
-    },
-    {
-      "name": "project.xa-datasource.item-list.enabled",
-      "type": "java.lang.Boolean",
-      "description": "데이터소스 사용여부 #project.xa-datasource.item-list.enabled",
-      "sourceType": "com.project.cmn.datasource.jta.XADataSourceItem",
-      "defaultValue": false
-    },
-    {
-      "name": "project.xa-datasource.item-list.password",
-      "type": "java.lang.String",
-      "description": "DB 비밀번호 #project.xa-datasource.item-list.password",
-      "sourceType": "com.project.cmn.datasource.jta.XADataSourceItem"
-    },
-    {
-      "name": "project.xa-datasource.item-list.pool-size",
-      "type": "java.lang.Integer",
-      "description": "Pool 사이즈 #project.xa-datasource.item-list.pool-size",
-      "sourceType": "com.project.cmn.datasource.jta.XADataSourceItem",
-      "defaultValue": 0
-    },
-    {
-      "name": "project.xa-datasource.item-list.properties",
-      "type": "java.util.Properties",
-      "sourceType": "com.project.cmn.datasource.jta.XADataSourceItem"
-    },
-    {
-      "name": "project.xa-datasource.item-list.unique-resource-name",
-      "type": "java.lang.String",
-      "description": "리소스 이름 #project.xa-datasource.item-list.unique-resource-name",
-      "sourceType": "com.project.cmn.datasource.jta.XADataSourceItem"
-    },
-    {
-      "name": "project.xa-datasource.item-list.url",
-      "type": "java.lang.String",
-      "description": "DB의 URL #project.xa-datasource.item-list.url",
-      "sourceType": "com.project.cmn.datasource.jta.XADataSourceItem"
-    },
-    {
-      "name": "project.xa-datasource.item-list.user",
-      "type": "java.lang.String",
-      "description": "DB 사용자 이름 #project.xa-datasource.item-list.user",
-      "sourceType": "com.project.cmn.datasource.jta.XADataSourceItem"
-    },
-    {
-      "name": "project.xa-datasource.item-list.xa-data-source-class-name",
-      "type": "java.lang.String",
-      "description": "DBMS별 XADataSource 클래스 명 #project.xa-datasource.item-list.xa-data-source-class-name",
-      "sourceType": "com.project.cmn.datasource.jta.XADataSourceItem"
     }
   ],
   "hints": []

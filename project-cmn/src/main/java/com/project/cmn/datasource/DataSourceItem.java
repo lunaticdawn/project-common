@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,12 +13,13 @@ import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
 /**
- * {@link com.zaxxer.hikari.HikariDataSource} 생성에 필요한 설정
+ * 여러 개의 {@link com.zaxxer.hikari.HikariDataSource} 또는 {@link javax.sql.XADataSource} 생성에 필요한 설정
  * #project.datasource.item-list
  */
 @Getter
 @Setter
 @ToString
+@ConfigurationProperties(prefix = "project.datasource.item-list")
 public class DataSourceItem {
     /**
      * DataSource 사용여부
@@ -183,5 +185,21 @@ public class DataSourceItem {
         properties.putAll(map);
 
         return new HikariConfig(properties);
+    }
+
+    public Properties getPropertiesForXADataSource() {
+        Properties properties = new Properties();
+
+        // Oracle 의 경우, url 에 대한 속성이 URL 로 대문자임
+        if (StringUtils.containsIgnoreCase(url, "oracle")) {
+            properties.put("URL", url);
+        } else {
+            properties.put("url", url);
+        }
+
+        properties.put("user", user);
+        properties.put("password", password);
+
+        return properties;
     }
 }
