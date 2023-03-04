@@ -2,7 +2,6 @@ package com.project.cmn.http.accesslog;
 
 
 import com.project.cmn.http.util.JsonUtils;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.MDC;
@@ -20,10 +19,19 @@ import java.io.IOException;
  * {@link HttpServletRequest}와 {@link HttpServletResponse}를 분석하여 접근로그에 대한 정보를 {@link AccessLogDto}에 담고, 로깅한다.
  */
 @Slf4j
-@RequiredArgsConstructor
 public class AccessLogInterceptor implements HandlerInterceptor {
     private final AccessLogConfig accessLogConfig;
     private final AccessLog accessLog;
+
+    /**
+     * 생성자
+     *
+     * @param accessLog {@link AccessLog}
+     */
+    public AccessLogInterceptor(AccessLog accessLog) {
+        this.accessLog = accessLog;
+        this.accessLogConfig = accessLog.getAccessLogConfig();
+    }
 
     @Override
     public boolean preHandle(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull Object handler) {

@@ -1,10 +1,12 @@
 package com.project.cmn.http.accesslog;
 
+import com.project.cmn.datasource.DataSourceConfig;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
+import org.springframework.boot.context.properties.bind.Binder;
+import org.springframework.core.env.Environment;
 
 import java.util.List;
 
@@ -14,9 +16,17 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-@Component
 @ConfigurationProperties(prefix = "project.access.log")
 public class AccessLogConfig {
+    /**
+     * {@link Environment}에서 project.datasource 설정을 가져와 {@link DataSourceConfig}로 변환한다.
+     *
+     * @param environment {@link Environment}
+     * @return {@link AccessLogConfig}
+     */
+    public static AccessLogConfig init(Environment environment) {
+        return Binder.get(environment).bindOrCreate("project.access.log", AccessLogConfig.class);
+    }
 
     /**
      * Access Log 사용 여부

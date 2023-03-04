@@ -3,11 +3,13 @@ package com.project.cmn.http.accesslog;
 import com.project.cmn.http.WebCmnConstants;
 import com.project.cmn.util.HostInfoUtils;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.MDC;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.http.MediaType;
 import org.springframework.util.StopWatch;
 import org.springframework.web.util.ContentCachingRequestWrapper;
@@ -26,10 +28,15 @@ import java.util.stream.Collectors;
  * {@link HttpServletRequest}와 {@link HttpServletResponse}를 분석하여 접근로그에 대한 정보를 {@link AccessLogDto}에 담는다.
  */
 @Slf4j
-@RequiredArgsConstructor
+@Configuration
+@ConditionalOnProperty(prefix = "project.access.log", value = "enabled", havingValue = "true")
 public class AccessLog {
     @Getter
     private final AccessLogConfig accessLogConfig;
+
+    public AccessLog(Environment environment) {
+        this.accessLogConfig = AccessLogConfig.init(environment);
+    }
 
     private static final ThreadLocalAccessLog threadLocalAccessLog = new ThreadLocalAccessLog();
 
