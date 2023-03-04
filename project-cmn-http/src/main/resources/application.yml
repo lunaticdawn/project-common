@@ -8,9 +8,6 @@ spring:
       - org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration
       - org.springframework.boot.autoconfigure.jdbc.XADataSourceAutoConfiguration
 
-  jta:
-    enabled: false
-
 project:
   access.log:
     enabled: true
@@ -26,6 +23,7 @@ project:
     exclude-path-patterns:
 
   datasource:
+    type: "ds"
     item-list:
       - enabled: true
         primary: true
@@ -49,29 +47,30 @@ project:
         maximum-pool-size: 3
         connection-timeout: 3
 
-#  datasource:
-#    item-list:
-#      - enabled: true
-#        primary: true
-#        lazy-connection: true
-#        datasource-name: "conditioncoupon-ds"
-#        transaction-name: "conditioncoupon-tm"
-#        driver-class-name: "org.mariadb.jdbc.MariaDbDataSource"
-#        url: "jdbc:mariadb://10.90.1.220:3306/conditioncoupon_db?useSSL=false&allowMultiQueries=true"
-#        user: "conditioncoupon"
-#        password: "conditioncoupon!@34"
-#        maximum-pool-size: 3
-#        connection-timeout: 3
-#      - enabled: false
-#        lazy-connection: true
-#        datasource-name: "lmmdev11-ds"
-#        transaction-name: "lmmdev11-tm"
-#        driver-class-name: "oracle.jdbc.xa.client.OracleXADataSource"
-#        url: "jdbc:oracle:thin:@devdb11.lemonm.kr:1521:lmmdev11"
-#        user: "daelim"
-#        password: "daelimroqkf1"
-#        maximum-pool-size: 3
-#        connection-timeout: 3
+  #  datasource:
+  #    type: "xa"
+  #    item-list:
+  #      - enabled: true
+  #        primary: true
+  #        lazy-connection: true
+  #        datasource-name: "conditioncoupon-ds"
+  #        transaction-name: "conditioncoupon-tm"
+  #        driver-class-name: "org.mariadb.jdbc.MariaDbDataSource"
+  #        url: "jdbc:mariadb://10.90.1.220:3306/conditioncoupon_db?useSSL=false&allowMultiQueries=true"
+  #        user: "conditioncoupon"
+  #        password: "conditioncoupon!@34"
+  #        maximum-pool-size: 3
+  #        connection-timeout: 3
+  #      - enabled: false
+  #        lazy-connection: true
+  #        datasource-name: "lmmdev11-ds"
+  #        transaction-name: "lmmdev11-tm"
+  #        driver-class-name: "oracle.jdbc.xa.client.OracleXADataSource"
+  #        url: "jdbc:oracle:thin:@devdb11.lemonm.kr:1521:lmmdev11"
+  #        user: "daelim"
+  #        password: "daelimroqkf1"
+  #        maximum-pool-size: 3
+  #        connection-timeout: 3
 
   mybatis:
     enabled: true

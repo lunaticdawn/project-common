@@ -68,7 +68,8 @@ public class RegistryMyBatisMapper implements BeanDefinitionRegistryPostProcesso
         AbstractBeanDefinition mapperScannerConfigurer;
 
         for (MyBatisItem item : myBatisConfig.getItemList()) {
-            if (!item.isEnabled() || registry.containsBeanDefinition(item.getDatasourceName())) {
+            if (!item.isEnabled() || !registry.containsBeanDefinition(item.getDatasourceName())) {
+                log.info("# {} - enabled: {}, containsBeanDefinition: {}", item.getDatasourceName(), item.isEnabled(), registry.containsBeanDefinition(item.getDatasourceName()));
                 continue;
             }
 
