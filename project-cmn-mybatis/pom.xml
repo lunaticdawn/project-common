@@ -7,10 +7,10 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>project-cmn-mybatis-gen</artifactId>
+    <artifactId>project-cmn-mybatis</artifactId>
     <packaging>jar</packaging>
 
-    <name>MyBatis 용 파일 생성</name>
+    <name>MyBatis 용 파일을 생성하는 프로젝트</name>
 
     <properties>
         <project.cmm.version>0.0.1-SNAPSHOT</project.cmm.version>

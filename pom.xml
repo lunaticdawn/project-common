@@ -21,6 +21,6 @@
     <modules>
         <module>project-cmn-http</module>
         <module>project-cmn</module>
-        <module>project-cmn-mybatis-gen</module>
+        <module>project-cmn-mybatis</module>
     </modules>
 </project>
