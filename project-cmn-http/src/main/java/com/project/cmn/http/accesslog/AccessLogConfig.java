@@ -1,6 +1,5 @@
 package com.project.cmn.http.accesslog;
 
-import com.project.cmn.datasource.DataSourceConfig;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -19,7 +18,7 @@ import java.util.List;
 @ConfigurationProperties(prefix = "project.access.log")
 public class AccessLogConfig {
     /**
-     * {@link Environment}에서 project.datasource 설정을 가져와 {@link DataSourceConfig}로 변환한다.
+     * {@link Environment}에서 project.access.log 설정을 가져와 {@link AccessLogConfig}로 변환한다.
      *
      * @param environment {@link Environment}
      * @return {@link AccessLogConfig}

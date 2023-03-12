@@ -1,16 +1,15 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <groupId>com.project.common</groupId>
         <artifactId>project-common</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>project-cmn-mybatis</artifactId>
-    <packaging>jar</packaging>
-
-    <name>MyBatis 용 파일을 생성하는 프로젝트</name>
+    <artifactId>project-cmn-database</artifactId>
+    <name>다중 데이터베이스 설정</name>
 
     <properties>
         <project.cmm.version>0.0.1-SNAPSHOT</project.cmm.version>
@@ -19,13 +18,22 @@
     <dependencies>
         <dependency>
             <groupId>com.project.common</groupId>
-            <artifactId>project-cmn-http</artifactId>
+            <artifactId>project-cmn</artifactId>
             <version>${project.cmm.version}</version>
         </dependency>
-         <dependency>
+                <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
             <artifactId>mybatis-spring-boot-starter</artifactId>
             <version>3.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jta-atomikos</artifactId>
+            <version>2.7.9</version>
         </dependency>
     </dependencies>
 </project>

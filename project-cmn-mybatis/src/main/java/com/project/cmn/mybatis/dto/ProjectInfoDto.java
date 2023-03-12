@@ -28,12 +28,6 @@ public class ProjectInfoDto {
     private String basePackage;
 
     /**
-     * DTO가 생성될 기본 패키지 이후의 패키지
-     */
-    @JsonProperty("dto_package")
-    private String dtoPackage;
-
-    /**
      * 테이블 스키마
      */
     @JsonProperty("table_schema")
@@ -48,11 +42,17 @@ public class ProjectInfoDto {
     /**
      * 공백으로 변경할 테이블 접두어. ex) TB_
      */
-    @JsonProperty("table_prefix_replace_by_blank")
-    private String tablePrefixReplaceByBlank;
+    @JsonProperty("prefix_replace_by_blank")
+    private String prefixReplaceByBlank;
 
     /**
-     * DTO의 접미어 ex) Dto
+     * Dto의 패키지. 기본 패키지 이후의 패키지
+     */
+    @JsonProperty("dto_package")
+    private String dtoPackage;
+
+    /**
+     * Dto의 접미어 ex) Dto
      */
     @JsonProperty("dto_postfix")
     private String dtoPostfix;
