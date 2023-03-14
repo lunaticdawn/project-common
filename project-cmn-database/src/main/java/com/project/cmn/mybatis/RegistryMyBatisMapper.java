@@ -59,6 +59,7 @@ public class RegistryMyBatisMapper implements BeanDefinitionRegistryPostProcesso
 
     /**
      * {@link SqlSessionTemplate}과 {@link MapperScannerConfigurer}를 등록한다.
+     * DataSource가 연결이 안되어 있다면 오류가 발생한다.
      *
      * @param registry {@link BeanDefinitionRegistry}
      */
@@ -68,11 +69,6 @@ public class RegistryMyBatisMapper implements BeanDefinitionRegistryPostProcesso
         AbstractBeanDefinition mapperScannerConfigurer;
 
         for (MyBatisItem item : myBatisConfig.getItemList()) {
-            if (!item.isEnabled() || !registry.containsBeanDefinition(item.getDatasourceName())) {
-                log.info("# {} - enabled: {}, containsBeanDefinition: {}", item.getDatasourceName(), item.isEnabled(), registry.containsBeanDefinition(item.getDatasourceName()));
-                continue;
-            }
-
             // SqlSessionFactory 와 SqlSessionTemplate 중 하나만 등록하면 되기 때문에 SqlSessionTemplate 만 등록
             // SqlSessionFactoryBean 정의
             sqlSessionFactory = BeanDefinitionBuilder.genericBeanDefinition(SqlSessionFactoryBean.class)
